@@ -24,8 +24,15 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "taklifnoma.ai",
-  description: "Taklifnoma.ai orqali Professional taklifnomalar yaratish",
+  title: "Xurshid & Mohinur",
+  description: "Sizni eng baxtli kunimizga lutfan taklif etamiz!",
+  openGraph: {
+    title: "Xurshid & Mohinur",
+    description: "Sizni eng baxtli kunimizga lutfan taklif etamiz!",
+    siteName: "Xurshid & Mohinur - Nikoh to'yi",
+    locale: "uz_UZ",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
