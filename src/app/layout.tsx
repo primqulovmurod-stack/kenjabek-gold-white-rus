@@ -45,7 +45,7 @@ export default function RootLayout({
       lang="uz"
       className={`${inter.variable} ${playfairDisplay.variable} ${montserrat.variable} ${cormorant.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans">{children}</body>
+      <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>{children}</body>
     </html>
   );
 }
