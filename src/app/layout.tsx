@@ -24,6 +24,7 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://xurshid-mohinur-rolex.vercel.app"),
   title: "Xurshid & Mohinur - Nikoh to'yi",
   description: "Sizni eng baxtli kunimizga lutfan taklif etamiz!",
   openGraph: {
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg",
+        url: "/assets/og-preview.jpg",
         width: 1200,
         height: 630,
         alt: "Xurshid & Mohinur Nikoh to'yi",
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Xurshid & Mohinur - Nikoh to'yi",
     description: "Sizni eng baxtli kunimizga lutfan taklif etamiz!",
-    images: ["https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg"],
+    images: ["/assets/og-preview.jpg"],
   },
 };
 
