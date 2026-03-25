@@ -29,6 +29,9 @@ interface GoldClassicInvitationProps {
 
 
 
+const goldText = "bg-clip-text text-transparent bg-gradient-to-b from-[#D4AF37] via-[#F9E29C] to-[#B8860B]";
+const goldGradient = "bg-gradient-to-br from-[#B8860B] via-[#FFD700] to-[#DAA520]";
+
 export default function GoldClassicInvitation({
   groomName = "Kenjabek",
   brideName = "Sofiya",
@@ -433,27 +436,31 @@ export default function GoldClassicInvitation({
                  
                  <div className="relative z-10 h-full flex flex-col justify-between">
                     <div className="flex justify-between items-start">
-                       <div className={`w-14 h-10 ${goldGradient} rounded-lg shadow-xl relative overflow-hidden`}>
+                       <div className={`w-14 h-10 ${goldGradient} rounded-lg shadow-xl relative overflow-hidden shrink-0`}>
                            <div className="absolute inset-0 opacity-30 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,.5)_50%,transparent_75%)] bg-[length:10px_10px]" />
                        </div>
-                       <div className="text-right pr-10">
-                           <span className="text-[9px] font-bold tracking-[0.4em] text-[#D4AF37] uppercase block">UZCARD / HUMO</span>
+                       <div className="text-right">
+                           <span className="text-[10px] font-bold tracking-[0.3em] text-[#D4AF37] uppercase block">UZCARD / HUMO</span>
                        </div>
                     </div>
 
-                    <div className="space-y-6">
+                    <div className="space-y-4">
                        <div className="space-y-1">
-                          <p className="text-[8px] font-bold tracking-[0.4em] text-[#D4AF37]/60 uppercase">KARTA RAQAMI</p>
-                          <p className="text-xl md:text-2xl font-mono tracking-[0.2em] text-white/95 whitespace-nowrap">9860 6004 0356 5382</p>
+                          <p className="text-[9px] font-bold tracking-[0.4em] text-[#D4AF37]/60 uppercase">KARTA RAQAMI</p>
+                          <p className="text-xl xs:text-2xl font-mono tracking-[0.15em] text-white/95 whitespace-nowrap overflow-x-auto no-scrollbar">
+                            9860 6004 0356 5382
+                          </p>
                        </div>
-                       <div className="flex justify-between items-end border-t border-white/5 pt-4">
-                          <div className="flex-1 min-w-0">
-                             <p className="text-[8px] font-bold tracking-[0.4em] text-[#D4AF37]/60 uppercase mb-1">KARTA EGASI</p>
-                             <p className="text-lg font-serif italic text-white/90 truncate">{groomName}</p>
+                       <div className="flex justify-between items-end border-t border-white/10 pt-4 gap-4">
+                          <div className="min-w-0">
+                             <p className="text-[9px] font-bold tracking-[0.4em] text-[#D4AF37]/60 uppercase mb-1">KARTA EGASI</p>
+                             <p className="text-lg font-serif italic text-white leading-none">
+                               {groomName}
+                             </p>
                           </div>
-                          <div className="flex items-center gap-1 shrink-0">
-                             <div className="w-8 h-8 rounded-full bg-[#EB001B] -mr-3 border border-black/20" />
-                             <div className="w-8 h-8 rounded-full bg-[#F79E1B]/90 border border-black/20" />
+                          <div className="flex items-center shrink-0 pb-1">
+                             <div className="w-8 h-8 rounded-full bg-[#EB001B] -mr-3 border border-black/20 shadow-lg" />
+                             <div className="w-8 h-8 rounded-full bg-[#F79E1B]/90 border border-black/20 shadow-lg" />
                           </div>
                        </div>
                     </div>
@@ -538,7 +545,6 @@ export default function GoldClassicInvitation({
 
 const CountdownItem = ({ label, date, type }: { label: string, date: string, type: string }) => {
     const [value, setValue] = useState(0);
-    const goldText = "bg-clip-text text-transparent bg-gradient-to-b from-[#D4AF37] via-[#F9E29C] to-[#B8860B]";
 
     useEffect(() => {
         const target = new Date(date).getTime();
