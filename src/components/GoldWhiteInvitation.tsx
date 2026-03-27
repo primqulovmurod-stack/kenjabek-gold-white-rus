@@ -34,7 +34,7 @@ const goldGradient = "bg-gradient-to-br from-[#B8860B] via-[#FFD700] to-[#DAA520
 
 export default function GoldClassicInvitation({
   groomName = "Kenjabek",
-  brideName = "Sofiya",
+  brideName = "Снежана",
   date = "24 - APREL - 2026",
   time = "19:00",
   locationName = "Demir (Asr)",

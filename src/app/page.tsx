@@ -24,10 +24,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
   if (host.includes('gold') || host.includes('white') || host.includes('rus') || host.includes('localhost')) {
     return {
-      title: "Кенжабек и София - Свадебное приглашение",
+      title: "Кенжабек и Снежана - Свадебное приглашение",
       description: "Приглашаем вас на наш самый счастливый день!",
       openGraph: {
-        title: "Кенжабек и София - Свадебное приглашение",
+        title: "Кенжабек и Снежана - Свадебное приглашение",
         description: "Будьте с нами в наш самый счастливый день!",
         images: ['/assets/og-preview.jpg'],
       }
