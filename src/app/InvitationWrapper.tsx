@@ -14,26 +14,42 @@ interface InvitationWrapperProps {
 
 export default function InvitationWrapper({ initialHost }: InvitationWrapperProps) {
   const [mounted, setMounted] = useState(false);
-  const [theme, setTheme] = useState<'rolex' | 'pink' | 'watch' | 'goldclassic' | 'goldwhite'>(
-    initialHost.includes('watch') ? 'watch' : 
-    initialHost.includes('goldclassic') ? 'goldclassic' : 
-    initialHost.includes('goldwhite') ? 'goldwhite' : 'pink'
-  );
+  // Improved detection
+  const hostLower = initialHost.toLowerCase();
+  const isXurshid = hostLower.includes('xurshid') || hostLower.includes('mohinur') || hostLower.includes('rolex') || hostLower.includes('watch');
+  
+  const [theme, setTheme] = useState<'rolex' | 'pink' | 'watch' | 'goldclassic' | 'goldwhite'>(() => {
+    if (hostLower.includes('watch')) return 'watch';
+    if (hostLower.includes('goldclassic')) return 'goldclassic';
+    if (hostLower.includes('goldwhite') || hostLower.includes('white')) return 'goldwhite';
+    if (hostLower.includes('rolex')) return 'rolex';
+    if (isXurshid) return 'rolex'; // default to rolex theme for Xurshid if no specific keyword
+    if (hostLower.includes('localhost')) return 'rolex'; // Default to Xurshid locally
+    return 'pink';
+  });
 
   useEffect(() => {
     setMounted(true);
-    const search = window.location.search.replace(/%3D/gi, '=');
+    const search = window.location.search.replace(/%3D/gi, '=').toLowerCase();
     const params = new URLSearchParams(search);
     const themeParam = params.get('theme');
+    const windowHost = window.location.hostname.toLowerCase();
+    const isXurshidHost = windowHost.includes('xurshid') || windowHost.includes('mohinur') || windowHost.includes('rolex') || windowHost.includes('watch');
     
-    if (themeParam === 'pink' || window.location.hostname.includes('pink')) {
-      setTheme('pink');
-    } else if (themeParam === 'watch' || window.location.hostname.includes('watch')) {
+    if (themeParam === 'rolex' || (windowHost.includes('rolex') && isXurshidHost)) {
+      setTheme('rolex');
+    } else if (themeParam === 'pink-luxury' || (windowHost.includes('pink') && isXurshidHost)) {
+      setTheme('rolex'); // We'll handle pink luxury separately in the return
+    } else if (themeParam === 'watch' || windowHost.includes('watch')) {
       setTheme('watch');
-    } else if (themeParam === 'goldwhite' || window.location.hostname.includes('goldwhite') || window.location.hostname.includes('gold-white') || window.location.hostname.includes('white')) {
+    } else if (themeParam === 'goldwhite' || windowHost.includes('goldwhite') || windowHost.includes('gold-white') || windowHost.includes('white')) {
       setTheme('goldwhite');
-    } else if (themeParam === 'goldclassic' || window.location.hostname.includes('goldclassic')) {
+    } else if (themeParam === 'goldclassic' || windowHost.includes('goldclassic')) {
       setTheme('goldclassic');
+    } else if (themeParam === 'pink' || (windowHost.includes('pink') && !isXurshidHost)) {
+      setTheme('pink');
+    } else if (windowHost.includes('localhost')) {
+      setTheme('rolex');
     } else {
       setTheme('pink');
     }
@@ -41,8 +57,34 @@ export default function InvitationWrapper({ initialHost }: InvitationWrapperProp
 
   if (!mounted) return null;
 
-  if (theme === 'pink' || initialHost.includes('pink')) {
-    return (
+  const GlobalCTA = () => (
+    <div className="w-full py-16 px-6 bg-black text-white text-center border-t border-white/5 relative">
+      <div className="max-w-2xl mx-auto space-y-6">
+        <h3 className="font-playfair text-2xl font-bold italic">Siz ham shunday chiroyli virtual taklifnoma xohlaysizmi?</h3>
+        <p className="text-gray-400 text-sm">O'z baxtli kuningiz uchun biz bilan eng yaxshisini yarating.</p>
+        <a 
+          href="https://t.me/taklifnoma_asia" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-3 bg-[#B8962E] text-white px-10 py-4 rounded-full font-black uppercase tracking-widest text-sm shadow-xl shadow-[#B8962E]/20 hover:scale-105 transition-all active:scale-95"
+        >
+          Buyurtma Berish <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" className="w-5 h-5" alt="TG" />
+        </a>
+        <div className="pt-8 text-[10px] text-gray-700 tracking-[0.3em] font-bold uppercase">Taklifnoma.Asia</div>
+      </div>
+    </div>
+  );
+
+  let content;
+  // Handle Xurshid's themes
+  if (isXurshid) {
+    if (hostLower.includes('pink') || theme === 'pink') {
+      content = <PinkLuxuryInvitation groomName="Xurshidbek" brideName="Mohinur" />;
+    } else {
+      content = <RolexLuxuryInvitation groomName="Xurshidbek" brideName="Mohinur" />;
+    }
+  } else if (theme === 'pink' || hostLower.includes('pink')) {
+    content = (
       <PinkWhiteInvitation 
         groomName="Kenjabek"
         brideName="Snejana"
@@ -55,11 +97,11 @@ export default function InvitationWrapper({ initialHost }: InvitationWrapperProp
         musicUrl="/assets/die_with_a_smile.mp3"
       />
     );
-  }
-
-  if (theme === 'watch') {
-    return (
-      <div className="bg-black min-h-screen">
+  } else if (theme === 'rolex' || hostLower.includes('rolex') || hostLower.includes('localhost')) {
+    content = <RolexLuxuryInvitation groomName="Xurshidbek" brideName="Mohinur" />;
+  } else if (theme === 'watch') {
+    content = (
+      <div className="bg-black">
         <WatchDesignInvitation 
           groomName="Xurshid"
           brideName="Mohinur"
@@ -72,13 +114,11 @@ export default function InvitationWrapper({ initialHost }: InvitationWrapperProp
         />
       </div>
     );
-  }
-
-  if (theme === 'goldclassic') {
-    return (
+  } else if (theme === 'goldclassic') {
+    content = (
       <GoldClassicInvitation 
         groomName="Kenjabek"
-        brideName="Snejana"
+        brideName="Safiya"
         date="24 - APREL - 2026"
         time="19:00"
         locationName="Demir (Asr)"
@@ -88,13 +128,11 @@ export default function InvitationWrapper({ initialHost }: InvitationWrapperProp
         musicUrl="/assets/die_with_a_smile.mp3"
       />
     );
-  }
-
-  if (theme === 'goldwhite') {
-    return (
+  } else if (theme === 'goldwhite') {
+    content = (
       <GoldWhiteInvitation 
         groomName="Kenjabek"
-        brideName="Snejana"
+        brideName="Safiya"
         date="24 - APREL - 2026"
         time="19:00"
         locationName="Demir (Asr)"
@@ -104,20 +142,29 @@ export default function InvitationWrapper({ initialHost }: InvitationWrapperProp
         musicUrl="/assets/die_with_a_smile.mp3"
       />
     );
+  } else {
+    content = (
+      <div className="bg-[#f8f8f8]">
+        <RolexLuxuryInvitation 
+          groomName="Xurshidbek"
+          brideName="Mohinur"
+          date="20 Iyun 2026"
+          time="18:00"
+          locationName="Oqsaroy Koshonasi"
+          locationAddress="Surxondaryo viloyati, Sho'rchi tumani"
+          imageUrl="https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg"
+          musicUrl="/assets/die_with_a_smile.mp3"
+        />
+      </div>
+    );
   }
 
   return (
-    <div className="bg-[#f8f8f8] min-h-screen">
-      <RolexLuxuryInvitation 
-        groomName="Xurshidbek"
-        brideName="Mohinur"
-        date="20 Iyun 2026"
-        time="18:00"
-        locationName="Oqsaroy Koshonasi"
-        locationAddress="Surxondaryo viloyati, Sho'rchi tumani"
-        imageUrl="https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg"
-        musicUrl="/assets/die_with_a_smile.mp3"
-      />
+    <div className="min-h-screen flex flex-col">
+      <div className="flex-1">
+        {content}
+      </div>
+      <GlobalCTA />
     </div>
   );
 }

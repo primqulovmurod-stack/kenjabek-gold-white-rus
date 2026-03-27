@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #FFFFFF;
   --foreground: #0F172A; /* Slate-900 */
@@ -33,6 +35,19 @@
   --milliy-accent: #6A5B53;
   --milliy-background: #FDFBF7;
   --milliy-card: #FFFFFF;
+  /* Gilded Theme Colors (Luxury) */
+  --gilded-surface: #10141a;
+  --gilded-on-surface: #dfe2eb;
+  --gilded-on-surface-variant: #d0c5af;
+  --gilded-primary: #f2ca50;
+  --gilded-primary-container: #d4af37;
+  --gilded-on-primary: #3c2f00;
+  --gilded-surface-container: #1c2026;
+  --gilded-surface-container-low: #181c22;
+  --gilded-surface-container-high: #262a31;
+  --gilded-surface-container-highest: #31353c;
+  --gilded-outline: #99907c;
+  --gilded-outline-variant: #4d4635;
 }
 
 @theme inline {
@@ -42,8 +57,22 @@
   --color-primary-light: var(--primary-light);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --font-sans: var(--font-montserrat);
-  --font-serif: var(--font-montserrat); /* Removing serif completely for this modern UI */
+  --font-sans: var(--font-manrope);
+  --font-serif: var(--font-noto-serif);
+
+  /* Gilded Theme Extensions */
+  --color-gilded-surface: var(--gilded-surface);
+  --color-gilded-on-surface: var(--gilded-on-surface);
+  --color-gilded-on-surface-variant: var(--gilded-on-surface-variant);
+  --color-gilded-primary: var(--gilded-primary);
+  --color-gilded-primary-container: var(--gilded-primary-container);
+  --color-gilded-on-primary: var(--gilded-on-primary);
+  --color-gilded-surface-container: var(--gilded-surface-container);
+  --color-gilded-surface-container-low: var(--gilded-surface-container-low);
+  --color-gilded-surface-container-high: var(--gilded-surface-container-high);
+  --color-gilded-surface-container-highest: var(--gilded-surface-container-highest);
+  --color-gilded-outline: var(--gilded-outline);
+  --color-gilded-outline-variant: var(--gilded-outline-variant);
 
   /* Stitch Theme Extensions */
   --color-stitch-primary: var(--stitch-primary);
@@ -71,7 +100,8 @@
   --color-milliy-card: var(--milliy-card);
 
   --font-headline: var(--font-noto-serif);
-  --font-body: var(--font-plus-jakarta);
+  --font-body: var(--font-manrope);
+  --font-manrope: var(--font-manrope);
 }
 
 * {

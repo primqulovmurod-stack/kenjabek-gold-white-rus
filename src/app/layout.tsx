@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter, Montserrat, Cormorant_Garamond, Noto_Serif, Plus_Jakarta_Sans } from "next/font/google";
+import { Playfair_Display, Inter, Montserrat, Cormorant_Garamond, Noto_Serif, Plus_Jakarta_Sans, Manrope } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -34,12 +34,16 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
 });
 
+const manrope = Manrope({
+  variable: "--font-manrope",
+  subsets: ["latin", "cyrillic"],
+});
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://kenjabek-gold-white.vercel.app"),
-  title: "Kenjabek & Snejana - Nikoh to'yi",
+  title: "Kenjabek & Safiya - Nikoh to'yi",
   description: "Bizning baxtli kunimizga lutfan taklif etamiz!",
   openGraph: {
-    title: "Kenjabek & Snejana - Nikoh to'yi",
+    title: "Kenjabek & Safiya - Nikoh to'yi",
     description: "Bizning baxtli kunimizga lutfan taklif etamiz!",
     siteName: "taklifnoma.ai",
     locale: "uz_UZ",
@@ -49,17 +53,19 @@ export const metadata: Metadata = {
         url: "/assets/og-preview.jpg",
         width: 1200,
         height: 630,
-        alt: "Kenjabek & Snejana Nikoh to'yi",
+        alt: "Kenjabek & Safiya Nikoh to'yi",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kenjabek & Snejana - Nikoh to'yi",
+    title: "Kenjabek & Safiya - Nikoh to'yi",
     description: "Bizning baxtli kunimizga lutfan taklif etamiz!",
     images: ["/assets/og-preview.jpg"],
   },
 };
+
+import { Providers } from "./providers";
 
 export default function RootLayout({
   children,
@@ -69,12 +75,15 @@ export default function RootLayout({
   return (
     <html
       lang="uz"
-      className={`${inter.variable} ${playfairDisplay.variable} ${montserrat.variable} ${cormorant.variable} ${notoSerif.variable} ${plusJakartaSans.variable} h-full antialiased`}
+      className={`${inter.variable} ${playfairDisplay.variable} ${montserrat.variable} ${cormorant.variable} ${notoSerif.variable} ${plusJakartaSans.variable} ${manrope.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <head>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block" />
       </head>
-      <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>{children}</body>
+      <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
