@@ -5,7 +5,7 @@ import RolexLuxuryInvitation from '@/components/RolexLuxuryInvitation';
 import PinkLuxuryInvitation from '@/components/PinkLuxuryInvitation';
 import WatchDesignInvitation from '@/components/WatchDesignInvitation';
 import GoldClassicInvitation from '@/components/GoldClassicInvitation';
-import GoldWhiteInvitation from '@/components/GoldWhiteInvitation';
+import GoldWhiteInvitation from '@/components/PinkWhiteInvitation';
 
 interface InvitationWrapperProps {
   initialHost: string;

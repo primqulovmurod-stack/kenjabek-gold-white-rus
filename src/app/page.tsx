@@ -10,12 +10,12 @@ export async function generateMetadata(): Promise<Metadata> {
   const host = headersList.get('host') || '';
   if (host.includes('pink')) {
     return {
-      title: "Xurshidbek & Mohinur - Nikoh to'yi (Pink Edition)",
+      title: "Kenjabek & Snejana - Nikoh to'yi (Pink Edition)",
       description: "Bizning baxtli kunimizga lutfan taklif etamiz!",
       openGraph: {
-        title: "Xurshidbek & Mohinur - Nikoh to'yi",
+        title: "Kenjabek & Snejana - Nikoh to'yi",
         description: "Eng baxtli kunimizda biz bilan bo'ling!",
-        images: ['/assets/floral.png'],
+        images: ['/assets/og-preview.jpg'],
       }
     };
   }
