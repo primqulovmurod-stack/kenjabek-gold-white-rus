@@ -22,13 +22,13 @@ export async function generateMetadata(): Promise<Metadata> {
     };
   }
 
-  if (host.includes('gold')) {
+  if (host.includes('gold') || host.includes('white') || host.includes('localhost')) {
     return {
-      title: "Kenjabek & Sofiya - Nikoh to'yi",
-      description: "Bizning baxtli kunimizga lutfan taklif etamiz!",
+      title: "Кенжабек и София - Свадебное приглашение",
+      description: "Приглашаем вас на наш самый счастливый день!",
       openGraph: {
-        title: "Kenjabek & Sofiya - Nikoh to'yi",
-        description: "Eng baxtli kunimizda biz bilan bo'ling!",
+        title: "Кенжабек и София - Свадебное приглашение",
+        description: "Будьте с нами в наш самый счастливый день!",
         images: ['/assets/og-preview.jpg'],
       }
     };
