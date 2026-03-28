@@ -162,12 +162,12 @@ export default function PinkWhiteInvitation({
 
         <AnimatePresence>
           {!isOpened && (
-            <div className={`absolute inset-0 z-[100] flex flex-col items-center justify-center bg-white p-6 overflow-hidden ${isOpened ? 'opacity-0 pointer-events-none' : 'opacity-100'}`} style={{ transition: 'opacity 1s ease-in-out' }}>
+            <div className={`fixed inset-0 z-[100] flex flex-col items-center justify-start pt-24 bg-white p-6 overflow-hidden ${isOpened ? 'opacity-0 pointer-events-none' : 'opacity-100'}`} style={{ transition: 'opacity 1s ease-in-out' }}>
               <div className="absolute inset-0 opacity-10">
                   <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#D81B60]/30 blur-[120px] rounded-full" />
               </div>
 
-              <div className="text-center space-y-20 relative z-10">
+              <div className="text-center space-y-12 relative z-10">
                 <div className="relative">
                   <div className="w-40 h-40 border border-[#D81B60] rounded-full flex items-center justify-center mx-auto relative">
                       <div className="w-[112%] h-[112%] border border-[#D81B60]/30 rounded-full absolute" 
