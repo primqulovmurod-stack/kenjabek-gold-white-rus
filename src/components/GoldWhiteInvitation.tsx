@@ -12,7 +12,8 @@ import {
   VolumeX,
   Heart,
   Music,
-  MailOpen
+  MailOpen,
+  Send
 } from 'lucide-react';
 
 interface GoldClassicInvitationProps {
@@ -36,13 +37,14 @@ export default function GoldWhiteInvitation({
   date = "24 - APREL - 2026",
   time = "19:00",
   locationName = "Demir (Asr)",
-  locationAddress = "Sho'rchi tumani",
+  locationAddress = "Jizzax Shahar",
   locationLink = "https://maps.google.com",
   imageUrl = "https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg",
   musicUrl = "https://www.learningcontainer.com/wp-content/uploads/2020/02/Sample-MP3-File.mp3"
 }: GoldClassicInvitationProps) {
   const [isOpened, setIsOpened] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const toggleMusic = () => {
@@ -62,6 +64,12 @@ export default function GoldWhiteInvitation({
       audioRef.current.play().catch(e => console.log('Autoplay blocked:', e));
       setIsPlaying(true);
     }
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText("9860600403565382");
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
   };
 
   const fadeIn = {
@@ -114,9 +122,12 @@ export default function GoldWhiteInvitation({
   ).getDate();
 
   return (
-    <div className="min-h-screen bg-[#F9F9F9] text-gray-900 font-sans overflow-x-hidden selection:bg-[#D4AF37]/20 relative flex justify-center">
-      <div className="w-full max-w-[500px] bg-white min-h-screen relative shadow-[0_0_100px_rgba(0,0,0,0.05)]">
-        <audio ref={audioRef} src={musicUrl} loop />
+    <div className={`min-h-screen bg-[#F9F9F9] text-gray-900 font-sans overflow-x-hidden selection:bg-[#D4AF37]/20 relative flex justify-center ${!isOpened ? 'h-screen overflow-y-hidden' : ''}`}>
+      <div className={`w-full max-w-[500px] bg-white min-h-screen relative shadow-[0_0_100px_rgba(0,0,0,0.05)] ${!isOpened ? 'h-screen overflow-hidden' : ''}`}>
+        <audio ref={audioRef} loop preload="auto">
+          <source src={musicUrl || "/assets/die_with_a_smile.mp3"} type="audio/mpeg" />
+          Sizning brauzeringiz audio elementini qo'llab-quvvatlamaydi.
+        </audio>
 
         <div className="absolute inset-0 pointer-events-none opacity-[0.03] z-0" 
              style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/natural-paper.png")` }} />
@@ -132,71 +143,57 @@ export default function GoldWhiteInvitation({
 
         <AnimatePresence>
           {!isOpened && (
-            <motion.div 
-              initial={{ opacity: 1 }}
-              exit={{ opacity: 0, scale: 1.05, transition: { duration: 1.2, ease: "easeInOut" } }}
-              className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-white p-6 overflow-hidden"
-            >
+            <div className={`absolute inset-0 z-[100] flex flex-col items-center justify-start pt-12 bg-white p-6 overflow-hidden ${isOpened ? 'opacity-0 pointer-events-none' : 'opacity-100'}`} style={{ transition: 'opacity 1s ease-in-out' }}>
               <div className="absolute inset-0 opacity-20">
-                  <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#D4AF37]/20 blur-[120px] rounded-full animate-pulse" />
+                  <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#D4AF37]/20 blur-[120px] rounded-full" />
               </div>
 
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1.5 }}
-                className="text-center space-y-20 relative z-10"
-              >
-                <div className="relative">
+              <div className="text-center space-y-12 relative z-10 flex flex-col items-center">
+                <div className="mb-12">
+                   <p className="text-[10px] tracking-[0.4em] font-bold text-[#B8962E] uppercase whitespace-nowrap">V I R T U A L &nbsp; T A K L I F N O M A</p>
+                   <div className="h-px w-12 bg-[#B8962E]/20 mx-auto mt-2" />
+                </div>
+
+                <div className="space-y-8 order-1">
+                  <p className="text-[11px] tracking-[0.8em] uppercase font-bold text-[#D4AF37]/80">TO'YIMIZGA TAKLIF ETAMIZ</p>
+                  <GoldOrnament className="py-2" />
+                </div>
+
+                <div className="relative order-2">
                   <div className="w-40 h-40 border border-[#D4AF37] rounded-full flex items-center justify-center mx-auto relative">
-                      <div className="w-[112%] h-[112%] border border-[#D4AF37]/30 rounded-full absolute animate-[spin_20s_linear_infinite]" 
+                      <div className="w-[112%] h-[112%] border border-[#D4AF37]/30 rounded-full absolute" 
                            style={{ borderStyle: 'dashed' }} />
                       <h1 className={`text-5xl font-serif italic ${goldText}`}>
                           {groomName[0]} <span className="text-3xl align-middle font-serif text-gray-300">&</span> {brideName[0]}
                       </h1>
                       
-                      <motion.div 
-                        animate={{ y: [0, -5, 0] }}
-                        transition={{ duration: 3, repeat: Infinity }}
-                        className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-white px-4 py-1 border border-[#D4AF37]/30 rounded-full text-[#D4AF37]"
-                      >
+                      <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-white px-4 py-1 border border-[#D4AF37]/30 rounded-full text-[#D4AF37]">
                           <Heart size={18} fill="currentColor" />
-                      </motion.div>
+                      </div>
                   </div>
                 </div>
                 
-                <div className="space-y-8">
-                  <p className="text-[11px] tracking-[0.8em] uppercase font-bold text-[#D4AF37]/80">TO'YIMIZGA TAKLIF ETAMIZ</p>
-                  <GoldOrnament className="py-2" />
-                  <motion.div
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 1 }}
-                      className="flex flex-col items-center gap-10"
-                  >
-                      <motion.button 
-                          onClick={handleOpen}
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          className="group relative flex flex-col items-center gap-6"
-                      >
-                          <div className="relative w-24 h-24 mb-2">
-                               <div className="absolute inset-[-4px] border border-[#D4AF37]/20 rounded-full animate-pulse" />
-                               <div className="relative w-full h-full rounded-full border border-[#D4AF37]/40 flex items-center justify-center bg-white shadow-sm group-hover:border-[#B8860B] transition-all duration-500 overflow-hidden">
-                                   <div className="absolute inset-0 gold-shimmer opacity-0 group-hover:opacity-10 transition-opacity" />
-                                   <MailOpen className="w-10 h-10 text-[#D4AF37] group-hover:scale-110 transition-transform duration-500" strokeWidth={1} />
-                               </div>
-                          </div>
-                      </motion.button>
-                  </motion.div>
+                <div className="flex flex-col items-center gap-10 pt-10 order-3">
+                    <button 
+                        onClick={handleOpen}
+                        className="group relative flex flex-col items-center gap-6 hover:scale-105 transition-transform"
+                    >
+                        <div className="relative w-24 h-24 mb-2">
+                             <div className="absolute inset-[-4px] border border-[#D4AF37]/20 rounded-full animate-pulse" />
+                             <div className="relative w-full h-full rounded-full border border-[#D4AF37]/40 flex items-center justify-center bg-white shadow-sm group-hover:border-[#B8860B] transition-all duration-500 overflow-hidden">
+                                 <MailOpen className="w-10 h-10 text-[#D4AF37] group-hover:scale-110 transition-transform duration-500" strokeWidth={1} />
+                             </div>
+                        </div>
+                        <p className="text-[10px] tracking-[0.4em] font-medium text-[#D4AF37]/60 uppercase whitespace-nowrap">Taklifnomani ochish</p>
+                    </button>
                 </div>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           )}
         </AnimatePresence>
 
         <main className={`transition-all duration-1000 ${isOpened ? 'opacity-100' : 'opacity-0'}`}>
-          <section className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-white">
+          <section className="relative h-screen w-full overflow-hidden flex flex-col items-center justify-start pt-24 bg-white">
             <motion.div 
               initial={{ opacity: 0, y: 60 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -340,36 +337,73 @@ export default function GoldWhiteInvitation({
             </div>
           </section>
 
-          <footer className="py-32 px-6 bg-[#FAFAFA] text-center relative border-t border-[#D4AF37]/10">
-            <div className="space-y-12">
-              <div className="space-y-4">
-                 <p className="text-lg font-serif italic text-gray-300">Minnatdorchilik va sevgi bilan,</p>
-                 <div className={`text-5xl font-serif italic ${goldText}`}>{groomName} va {brideName}</div>
-              </div>
-              
-              <GoldOrnament />
-              
-              <div className="pt-20 border-t border-gray-100 max-w-xs mx-auto space-y-8">
-                <div className="space-y-2">
-                  <p className="text-[10px] tracking-[0.8em] font-bold text-[#D4AF37] uppercase">VIRTUAL TAKLIFNOMA</p>
-                  <div className="h-px w-20 bg-[#D4AF37]/30 mx-auto" />
-                </div>
+          <section className="py-32 px-10 text-center space-y-16 bg-white relative">
+             <div className="space-y-6">
+                <p className="text-[#B8962E] text-[10px] tracking-[0.4em] uppercase font-bold">To'yona uchun</p>
+                <h3 className={`text-4xl font-serif italic ${goldText}`}>Tashrif Buyura Olmasangiz...</h3>
+                <p className="text-sm text-gray-400 font-serif italic max-w-[280px] mx-auto leading-relaxed">
+                  "Agarda bizni masofadan turib tabriklamoqchi bo'lsangiz, quyidagi karda raqami orqali o'z sovg'angizni yuborishingiz mumkin."
+                </p>
+             </div>
 
-                <div className="space-y-4">
-                  <p className="text-[9px] text-gray-400 uppercase tracking-[0.4em]">Buyurtma qilish uchun:</p>
-                  <a href="tel:+998915930833" className={`text-xl font-medium ${goldText}`}>+998 91 593 08 33</a>
-                </div>
+             <motion.div 
+              whileHover={{ y: -10, rotate: -1 }}
+              className="group relative p-12 bg-gradient-to-br from-[#1A1A1A] to-[#000000] rounded-[3.5rem] shadow-[0_50px_100px_rgba(0,0,0,0.3)] overflow-hidden text-left max-w-sm mx-auto"
+             >
+                <div className="absolute top-0 right-0 p-12 text-5xl opacity-5 font-serif italic text-white uppercase tracking-tighter">HUMO</div>
+                <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-[#B8962E]/15 rounded-full blur-[80px]" />
 
-                <div>
-                  <a 
-                    href="https://t.me/taklifnomaai" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className={`inline-block text-[10px] font-bold tracking-[0.3em] text-white gold-shimmer px-8 py-4 rounded-full shadow-lg active:scale-95`}
+                <div className="relative z-10 space-y-12">
+                  <div className="flex justify-between items-center">
+                     <div className="w-14 h-11 bg-gradient-to-tr from-[#B8860B] via-[#FFD700] to-[#DAA520] rounded-xl shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)]" />
+                     <div className="text-[10px] font-bold text-white/40 tracking-[0.3em] uppercase">HUMO</div>
+                  </div>
+
+                  <div className="space-y-8">
+                    <div className="space-y-2">
+                        <p className="text-[8px] uppercase tracking-[0.4em] text-white/20 font-bold">KARTA EGASI</p>
+                        <p className="text-2xl font-serif text-white tracking-[0.1em] uppercase">{groomName}</p>
+                    </div>
+                    <div className="space-y-2">
+                        <p className="text-[8px] uppercase tracking-[0.4em] text-white/20 font-bold">KARTA RAQAMI</p>
+                        <p className="text-xl font-mono text-white tracking-[0.05em] font-light whitespace-nowrap">9860 6004 0356 5382</p>
+                    </div>
+                  </div>
+
+                  <button 
+                    onClick={copyToClipboard}
+                    className={`w-full py-6 rounded-2xl text-[10px] font-bold uppercase tracking-[0.4em] transition-all duration-500 shadow-2xl flex items-center justify-center gap-2 ${isCopied ? 'bg-[#B8962E] text-white' : 'bg-white text-black hover:bg-[#B8962E] hover:text-white'}`}
                   >
-                    TELEGRAM BUYURTMA
-                  </a>
+                    <CreditCard size={16} />
+                    {isCopied ? 'NUSXALANDI!' : 'KARTANI KO\'CHIRISH'}
+                  </button>
                 </div>
+             </motion.div>
+          </section>
+
+          <footer className="py-24 bg-white text-center relative border-t border-gray-50">
+            <div className="max-w-md mx-auto px-6 space-y-12">
+              <div className="space-y-4">
+                <p className="text-[10px] tracking-[0.4em] font-bold text-[#B8962E] uppercase whitespace-nowrap">V I R T U A L &nbsp; T A K L I F N O M A</p>
+                <div className="h-px w-20 bg-[#B8962E]/20 mx-auto" />
+              </div>
+
+              <div className="space-y-6">
+                <p className="text-[9px] text-gray-400 uppercase tracking-[0.4em]">BUYURTMA QILISH UCHUN:</p>
+                <a href="tel:+998915930833" className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#B8962E] via-[#EAD0A8] to-[#B8962E]">
+                  +998 91 593 08 33
+                </a>
+              </div>
+
+              <div>
+                <a 
+                  href="https://t.me/taklifnoma_asia" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-block text-[11px] font-bold tracking-[0.2em] text-white bg-gradient-to-r from-[#B8962E] to-[#8C7122] px-10 py-5 rounded-2xl shadow-xl shadow-[#B8962E]/30 hover:brightness-110 active:scale-95 transition-all uppercase"
+                >
+                  TELEGRAM BUYURTMA
+                </a>
               </div>
             </div>
           </footer>

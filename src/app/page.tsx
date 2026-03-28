@@ -27,10 +27,16 @@ export async function generateMetadata(): Promise<Metadata> {
   const isKenjabek = (host.includes('gold') || host.includes('white') || host.includes('pink') || host.includes('kenjabek') || host.includes('localhost')) && !isXurshid;
   
   return {
-    title: isKenjabek ? "Kenjabek & Snejana - Nikoh to'yi" : "Xurshid & Mohinur - Nikoh to'yi",
+    title: isKenjabek ? "Kenjabek & Safiya - Nikoh to'yi" : "Xurshid & Mohinur - Nikoh to'yi",
     description: "Bizning baxtli kunimizga lutfan taklif etamiz!",
     openGraph: {
-      title: isKenjabek ? "Kenjabek & Snejana - Nikoh to'yi" : "Xurshid & Mohinur - Nikoh to'yi",
+      title: isKenjabek ? "Kenjabek & Safiya - Nikoh to'yi" : "Xurshid & Mohinur - Nikoh to'yi",
+      description: "Eng baxtli kunimizda biz bilan bo'ling!",
+      images: ['/assets/og-preview.jpg'],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: isKenjabek ? "Kenjabek & Safiya - Nikoh to'yi" : "Xurshid & Mohinur - Nikoh to'yi",
       description: "Eng baxtli kunimizda biz bilan bo'ling!",
       images: ['/assets/og-preview.jpg'],
     }
@@ -49,7 +55,7 @@ export default async function Page({
   const isMainLanding = host.includes('taklifnoma.asia') || host.includes('taklifnoma-asia.vercel.app');
   
   const isInvitation = !isMainLanding && (
-    (host.includes('vercel.app') && !host.includes('taklifnoma-asia')) || 
+    host.includes('vercel.app') || 
     host.includes('pink') || 
     host.includes('gold') || 
     host.includes('white') || 

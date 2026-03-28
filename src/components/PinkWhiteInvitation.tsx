@@ -147,58 +147,37 @@ export default function PinkWhiteInvitation({
 
         <AnimatePresence>
           {!isOpened && (
-            <motion.div 
-              initial={{ opacity: 1 }}
-              exit={{ opacity: 0, scale: 1.05, transition: { duration: 1.2, ease: "easeInOut" } }}
-              className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-white p-6 overflow-hidden"
-            >
+            <div className={`absolute inset-0 z-[100] flex flex-col items-center justify-center bg-white p-6 overflow-hidden ${isOpened ? 'opacity-0 pointer-events-none' : 'opacity-100'}`} style={{ transition: 'opacity 1s ease-in-out' }}>
               <div className="absolute inset-0 opacity-10">
-                  <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#D81B60]/30 blur-[120px] rounded-full animate-pulse" />
+                  <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#D81B60]/30 blur-[120px] rounded-full" />
               </div>
 
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1.5 }}
-                className="text-center space-y-20 relative z-10"
-              >
+              <div className="text-center space-y-20 relative z-10">
                 <div className="relative">
                   <div className="w-40 h-40 border border-[#D81B60] rounded-full flex items-center justify-center mx-auto relative">
-                      <div className="w-[112%] h-[112%] border border-[#D81B60]/30 rounded-full absolute animate-[spin_20s_linear_infinite]" 
+                      <div className="w-[112%] h-[112%] border border-[#D81B60]/30 rounded-full absolute" 
                            style={{ borderStyle: 'dashed' }} />
                       <h1 className={`text-5xl font-serif italic ${pinkText}`}>
                           {groomName[0]} <span className="text-3xl align-middle font-serif text-pink-300">&</span> {brideName[0]}
                       </h1>
                       
-                      <motion.div 
-                        animate={{ y: [0, -5, 0] }}
-                        transition={{ duration: 3, repeat: Infinity }}
-                        className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-white px-4 py-1 border border-[#D81B60]/30 rounded-full text-[#AD1457]"
-                      >
+                      <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-white px-4 py-1 border border-[#D81B60]/30 rounded-full text-[#AD1457]">
                           <Heart size={18} fill="currentColor" />
-                      </motion.div>
+                      </div>
                   </div>
                 </div>
                 
                 <div className="space-y-8">
                   <p className="text-[11px] tracking-[0.8em] uppercase font-bold text-[#AD1457]/70">TO'YIMIZGA TAKLIF ETAMIZ</p>
                   <PinkOrnament className="py-2" />
-                  <motion.div
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 1 }}
-                      className="flex flex-col items-center gap-10"
-                  >
-                      <motion.button 
+                  <div className="flex flex-col items-center gap-10">
+                      <button 
                           onClick={handleOpen}
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          className="group relative flex flex-col items-center gap-6"
+                          className="group relative flex flex-col items-center gap-6 hover:scale-105 transition-transform"
                       >
                           <div className="relative w-24 h-24 mb-2">
                                <div className="absolute inset-[-4px] border border-[#D81B60]/20 rounded-full animate-pulse" />
                                <div className="relative w-full h-full rounded-full border border-[#D81B60]/40 flex items-center justify-center bg-white shadow-sm group-hover:border-[#AD1457] transition-all duration-500 overflow-hidden">
-                                   <div className="absolute inset-0 pink-shimmer opacity-0 group-hover:opacity-10 transition-opacity" />
                                    <MailOpen className="w-10 h-10 text-[#AD1457] group-hover:scale-110 transition-transform duration-500" strokeWidth={1} />
                                </div>
                           </div>
@@ -208,15 +187,15 @@ export default function PinkWhiteInvitation({
                                   TAKLIFNOMANI OCHISH
                               </span>
                           </div>
-                      </motion.button>
-                  </motion.div>
+                      </button>
+                  </div>
                 </div>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           )}
         </AnimatePresence>
 
-        <main className={`transition-all duration-1000 ${isOpened ? 'opacity-100' : 'opacity-0'}`}>
+        <main className={`transition-opacity duration-1000 ${isOpened ? 'opacity-100' : 'opacity-0'}`}>
           <section className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-white">
             <SubtlePattern />
             <motion.div 

@@ -24,7 +24,7 @@ export default function InvitationWrapper({ initialHost }: InvitationWrapperProp
     if (hostLower.includes('goldwhite') || hostLower.includes('white')) return 'goldwhite';
     if (hostLower.includes('rolex')) return 'rolex';
     if (isXurshid) return 'rolex'; // default to rolex theme for Xurshid if no specific keyword
-    if (hostLower.includes('localhost')) return 'rolex'; // Default to Xurshid locally
+    if (hostLower.includes('localhost')) return 'goldwhite'; // Default to Kenjabek Gold-White locally
     return 'pink';
   });
 
@@ -49,7 +49,7 @@ export default function InvitationWrapper({ initialHost }: InvitationWrapperProp
     } else if (themeParam === 'pink' || (windowHost.includes('pink') && !isXurshidHost)) {
       setTheme('pink');
     } else if (windowHost.includes('localhost')) {
-      setTheme('rolex');
+      setTheme('goldwhite');
     } else {
       setTheme('pink');
     }
@@ -57,23 +57,7 @@ export default function InvitationWrapper({ initialHost }: InvitationWrapperProp
 
   if (!mounted) return null;
 
-  const GlobalCTA = () => (
-    <div className="w-full py-16 px-6 bg-black text-white text-center border-t border-white/5 relative">
-      <div className="max-w-2xl mx-auto space-y-6">
-        <h3 className="font-playfair text-2xl font-bold italic">Siz ham shunday chiroyli virtual taklifnoma xohlaysizmi?</h3>
-        <p className="text-gray-400 text-sm">O'z baxtli kuningiz uchun biz bilan eng yaxshisini yarating.</p>
-        <a 
-          href="https://t.me/taklifnoma_asia" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-3 bg-[#B8962E] text-white px-10 py-4 rounded-full font-black uppercase tracking-widest text-sm shadow-xl shadow-[#B8962E]/20 hover:scale-105 transition-all active:scale-95"
-        >
-          Buyurtma Berish <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" className="w-5 h-5" alt="TG" />
-        </a>
-        <div className="pt-8 text-[10px] text-gray-700 tracking-[0.3em] font-bold uppercase">Taklifnoma.Asia</div>
-      </div>
-    </div>
-  );
+
 
   let content;
   // Handle Xurshid's themes
@@ -87,7 +71,7 @@ export default function InvitationWrapper({ initialHost }: InvitationWrapperProp
     content = (
       <PinkWhiteInvitation 
         groomName="Kenjabek"
-        brideName="Snejana"
+        brideName="Safiya"
         date="24 - APREL - 2026"
         time="19:00"
         locationName="Demir (Asr)"
@@ -118,7 +102,7 @@ export default function InvitationWrapper({ initialHost }: InvitationWrapperProp
     content = (
       <GoldClassicInvitation 
         groomName="Kenjabek"
-        brideName="Snejana"
+        brideName="Safiya"
         date="24 - APREL - 2026"
         time="19:00"
         locationName="Demir (Asr)"
@@ -132,12 +116,12 @@ export default function InvitationWrapper({ initialHost }: InvitationWrapperProp
     content = (
       <GoldWhiteInvitation 
         groomName="Kenjabek"
-        brideName="Snejana"
+        brideName="Safiya"
         date="24 - APREL - 2026"
         time="19:00"
         locationName="Demir (Asr)"
-        locationAddress="Sho'rchi tumani"
-        locationLink="https://www.google.com/maps/place/ASR+Wedding+Hall/@40.1490597,67.8229612,20.75z/data=!4m6!3m5!1s0x38b2969244164953:0xcf441bf7b030ea16!8m2!3d40.1490952!4d67.8228464!16s%2Fg%2F11h9w32rg7!5m1!1e2?entry=ttu&g_ep=EgoyMDI2MDMyMi4wIKXMDSoASAFQAw%3D%3D"
+        locationAddress="Jizzax Shahar"
+        locationLink="https://www.google.com/maps/place/ASR+Wedding+Hall/@40.1490112,67.822955,20.25z/data=!4m6!3m5!1s0x38b2969244164953:0xcf441bf7b030ea16!8m2!3d40.1490952!4d67.8228464!16s%2Fg%2F11h9w32rg7!5m1!1e2?entry=ttu&g_ep=EgoyMDI2MDMyNC4wIKXMDSoASAFQAw%3D%3D"
         imageUrl="https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg"
         musicUrl="/assets/die_with_a_smile.mp3"
       />
@@ -164,7 +148,6 @@ export default function InvitationWrapper({ initialHost }: InvitationWrapperProp
       <div className="flex-1">
         {content}
       </div>
-      <GlobalCTA />
     </div>
   );
 }

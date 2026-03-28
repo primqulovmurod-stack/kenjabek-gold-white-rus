@@ -138,77 +138,55 @@ export default function GoldClassicInvitation({
         {/* Splash Screen */}
         <AnimatePresence>
           {!isOpened && (
-            <motion.div 
-              initial={{ opacity: 1 }}
-              exit={{ opacity: 0, scale: 1.05, transition: { duration: 1.2, ease: "easeInOut" } }}
-              className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-[#0F0F0F] p-6 overflow-hidden"
-            >
+            <div className={`absolute inset-0 z-[100] flex flex-col items-center justify-center bg-[#0F0F0F] p-6 overflow-hidden ${isOpened ? 'opacity-0 pointer-events-none' : 'opacity-100'}`} style={{ transition: 'opacity 1s ease-in-out' }}>
               <div className="absolute inset-0 opacity-20">
-                  <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#D4AF37]/20 blur-[120px] rounded-full animate-pulse" />
-                  <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-[#B8860B]/20 blur-[120px] rounded-full animate-pulse delay-1000" />
+                  <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#D4AF37]/20 blur-[120px] rounded-full" />
+                  <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-[#B8860B]/20 blur-[120px] rounded-full" />
               </div>
 
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1.5 }}
-                className="text-center space-y-20 relative z-10"
-              >
+              <div className="text-center space-y-20 relative z-10">
                 <div className="relative">
                   <div className="w-40 h-40 border border-[#D4AF37] rounded-full flex items-center justify-center mx-auto relative">
-                      <div className="w-[112%] h-[112%] border border-[#D4AF37]/30 rounded-full absolute animate-[spin_20s_linear_infinite]" 
+                      <div className="w-[112%] h-[112%] border border-[#D4AF37]/30 rounded-full absolute" 
                            style={{ borderStyle: 'dashed' }} />
                       <div className="w-[105%] h-[105%] border border-[#D4AF37]/50 rounded-full absolute" />
                       <h1 className={`text-5xl font-serif italic ${goldText}`}>
                           {groomName[0]} <span className="text-3xl align-middle font-serif">&</span> {brideName[0]}
                       </h1>
                       
-                      <motion.div 
-                          animate={{ y: [0, -5, 0] }}
-                          transition={{ duration: 3, repeat: Infinity }}
-                          className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-[#0F0F0F] px-4 py-1 border border-[#D4AF37]/30 rounded-full text-[#D4AF37]"
-                      >
+                      <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-[#0F0F0F] px-4 py-1 border border-[#D4AF37]/30 rounded-full text-[#D4AF37]">
                           <Heart size={18} fill="currentColor" />
-                      </motion.div>
+                      </div>
                   </div>
                 </div>
                 
                 <div className="space-y-8">
                   <p className="text-[11px] tracking-[0.8em] uppercase font-bold text-[#D4AF37]/80">TO'YIMIZGA TAKLIF ETAMIZ</p>
                   <GoldOrnament className="py-2" />
-                  <motion.div
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 1 }}
-                      className="flex flex-col items-center gap-10"
-                  >
-                      <motion.button 
+                  <div className="flex flex-col items-center gap-10">
+                      <button 
                           onClick={handleOpen}
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          className="group relative flex flex-col items-center gap-6"
+                          className="group relative flex flex-col items-center gap-6 hover:scale-105 transition-transform"
                       >
                           <div className="relative w-24 h-24 mb-2">
                                <div className="absolute inset-[-4px] border border-[#D4AF37]/20 rounded-full animate-pulse" />
                                <div className="absolute inset-0 bg-[#D4AF37] blur-3xl opacity-10 group-hover:opacity-30 transition-opacity duration-700" />
                                
                                <div className="relative w-full h-full rounded-full border border-[#D4AF37]/40 flex items-center justify-center bg-black shadow-[0_0_50px_rgba(212,175,55,0.2)] group-hover:border-[#D4AF37] transition-all duration-500 overflow-hidden">
-                                   <div className="absolute inset-0 gold-shimmer opacity-0 group-hover:opacity-10 transition-opacity" />
                                    <MailOpen className="w-10 h-10 text-[#D4AF37] group-hover:scale-110 transition-transform duration-500" strokeWidth={1} />
                                </div>
                           </div>
 
                           <div className="space-y-3 flex flex-col items-center">
-                              <span className="text-[13px] font-bold tracking-[0.6em] text-[#D4AF37] uppercase group-hover:tracking-[0.8em] transition-all duration-700">
+                              <span className="text-[13px] font-bold tracking-[0.6em] text-[#D4AF37] uppercase">
                                   TAKLIFNOMANI OCHISH
                               </span>
-                              <div className="h-[0.5px] w-12 bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-center" />
                           </div>
-                      </motion.button>
-                  </motion.div>
+                      </button>
+                  </div>
                 </div>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           )}
         </AnimatePresence>
 
