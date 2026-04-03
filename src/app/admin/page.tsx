@@ -15,6 +15,24 @@ export default function AdminPanel() {
 
   useEffect(() => {
     loadData();
+
+    // Subscribe to REALTIME updates for instant data synchronization
+    const channel = supabase
+      .channel('admin_realtime_sync')
+      .on('postgres_changes', { event: '*', table: 'invitations', schema: 'public' }, (payload) => {
+          if (payload.eventType === 'INSERT') {
+              setInvitations(prev => [payload.new, ...prev]);
+          } else if (payload.eventType === 'UPDATE') {
+              setInvitations(prev => prev.map(inv => inv.id === payload.new.id ? payload.new : inv));
+          } else if (payload.eventType === 'DELETE') {
+              setInvitations(prev => prev.filter(inv => inv.id === payload.old.id));
+          }
+      })
+      .subscribe();
+
+    return () => {
+        supabase.removeChannel(channel);
+    };
   }, []);
 
   const loadData = async () => {
