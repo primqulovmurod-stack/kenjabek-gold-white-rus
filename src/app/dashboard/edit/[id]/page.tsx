@@ -192,6 +192,17 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
     return () => clearInterval(interval);
   }, [isPaid, id]);
 
+  // 3. Listen for phone updates from LeadCaptureModal
+  useEffect(() => {
+      const handleUpdated = (e: any) => {
+          if (e.detail?.phone) {
+              setContent(prev => ({ ...prev, phone: e.detail.phone }));
+          }
+      };
+      window.addEventListener('invitation-updated', handleUpdated);
+      return () => window.removeEventListener('invitation-updated', handleUpdated);
+  }, []);
+
   // Update content field
   const updateField = (field: keyof InvitationContent, value: string) => {
     setContent(prev => {
@@ -261,9 +272,15 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
   const [isCopied, setIsCopied] = useState(false);
 
   const handleExport = () => {
-      const hasPhone = localStorage.getItem('lead_modal_shown');
-      if (!hasPhone) {
-          window.dispatchEvent(new CustomEvent('trigger-lead-modal', { detail: { forced: true } }));
+      // Prioritize checking the invitation's own phone field over localStorage
+      // This ensures we always have a number associated with the current order
+      if (!content.phone) {
+          window.dispatchEvent(new CustomEvent('trigger-lead-modal', { 
+              detail: { 
+                  forced: true,
+                  invitationId: id 
+              } 
+          }));
           return;
       }
       handleSave();

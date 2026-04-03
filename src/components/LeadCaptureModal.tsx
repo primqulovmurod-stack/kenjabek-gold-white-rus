@@ -9,6 +9,7 @@ import { useTheme } from '@/context/ThemeContext';
 export default function LeadCaptureModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [isForced, setIsForced] = useState(false);
+  const [invId, setInvId] = useState<string | null>(null);
   const [phone, setPhone] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -18,6 +19,7 @@ export default function LeadCaptureModal() {
   useEffect(() => {
     const handleTrigger = (e: any) => {
         setIsForced(e.detail?.forced || false);
+        setInvId(e.detail?.invitationId || null);
         setIsOpen(true);
     };
 
@@ -66,9 +68,26 @@ export default function LeadCaptureModal() {
 
     setIsSubmitting(true);
     try {
-      const { error } = await supabase
+      // 1. Save to leads table
+      await supabase
         .from('leads')
         .insert([{ phone, source: window.location.pathname }]);
+
+      // 2. If invitationId provided, update the invitation record directly
+      // This fulfills Turn 5 requirement: "nomerlarni admindagi userlar malumotiga qo'shib qo'yish kerak"
+      if (invId) {
+          const { data: invData } = await supabase.from('invitations').select('content').eq('id', invId).single();
+          if (invData) {
+              const updatedContent = { ...invData.content, phone };
+              await supabase.from('invitations').update({ 
+                  phone, // Dedicated phone field for admin panel
+                  content: updatedContent 
+              }).eq('id', invId);
+              
+              // Notify the editor to refresh its state
+              window.dispatchEvent(new CustomEvent('invitation-updated', { detail: { phone } }));
+          }
+      }
 
       setIsSuccess(true);
       localStorage.setItem('lead_modal_shown', 'true');

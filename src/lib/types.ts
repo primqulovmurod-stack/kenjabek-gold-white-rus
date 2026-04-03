@@ -1,6 +1,7 @@
 export interface InvitationContent {
   groomName: string;
   brideName: string;
+  phone?: string;
   date: string;
   time: string;
   locationName: string;
@@ -17,6 +18,7 @@ export interface Invitation {
   id?: string;
   slug: string;
   is_paid: boolean;
+  phone?: string;
   content: InvitationContent;
   user_id?: string;
   created_at?: string;
