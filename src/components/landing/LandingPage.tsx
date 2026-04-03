@@ -179,28 +179,40 @@ const LandingPage = () => {
                     <motion.div 
                         key={i}
                         whileHover={{ y: -10 }}
-                        className="group relative h-[500px] rounded-[3.5rem] overflow-hidden border-8 border-gray-950 dark:border-white/10 shadow-2xl bg-black transition-all"
+                        className="group relative h-[720px] rounded-[3.5rem] overflow-hidden border-8 border-gray-950 dark:border-white/10 shadow-2xl bg-black transition-all ring-1 ring-white/10"
                     >
-                        <div className="absolute inset-0 w-full h-full overflow-hidden opacity-60 group-hover:opacity-100 transition-opacity duration-700 bg-white">
+                        {/* Interactive Preview Container */}
+                        <div className="absolute inset-0 w-full h-[150%] overflow-y-auto no-scrollbar bg-white">
                             <iframe 
                                 src={sample.link} 
-                                className="w-[375px] h-[667px] origin-top-left border-none pointer-events-none"
-                                style={{ transform: 'scale(1.3)' }}
+                                className="w-full h-full border-none"
                                 title={sample.title}
                                 loading="lazy"
                             ></iframe>
+                            
+                            {/* Overlay that allows scrolling but captures initial focus */}
+                            <div className="absolute inset-0 z-10 pointer-events-none bg-gradient-to-t from-black/60 via-transparent to-transparent group-hover:from-black/40 transition-all"></div>
                         </div>
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent p-10 flex flex-col justify-end text-center">
-                            <h3 className="font-playfair text-xl font-black mb-1 text-white uppercase tracking-tight">{sample.title}</h3>
-                            <p className="text-[#E11D48] text-[10px] font-black mb-6 uppercase tracking-[0.3em]">{sample.style}</p>
-                            <a 
-                                href={sample.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 px-8 py-3 bg-[#E11D48] text-white rounded-full text-[10px] font-black shadow-xl hover:bg-white hover:text-[#E11D48] transition-all uppercase tracking-widest"
-                            >
-                                SAYTNI KO'RISH <ExternalLink size={14} />
-                            </a>
+
+                        {/* Card Info Overlay */}
+                        <div className="absolute inset-x-0 bottom-0 p-10 flex flex-col items-center text-center z-20 pointer-events-none group-hover:translate-y-2 transition-transform duration-500">
+                            <div className="bg-black/20 backdrop-blur-xl p-6 rounded-[2rem] border border-white/10 w-full transform group-hover:scale-105 transition-all">
+                                <h3 className="font-playfair text-xl font-black mb-1 text-white uppercase tracking-tight">{sample.title}</h3>
+                                <p className="text-[#E11D48] text-[10px] font-black mb-6 uppercase tracking-[0.3em]">{sample.style}</p>
+                                <a 
+                                    href={sample.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 px-8 py-3 bg-[#E11D48] text-white rounded-full text-[10px] font-black shadow-xl hover:bg-white hover:text-[#E11D48] transition-all uppercase tracking-widest pointer-events-auto"
+                                >
+                                    TO'LIQ KO'RISH <ExternalLink size={14} />
+                                </a>
+                            </div>
+                        </div>
+                        
+                        {/* Device Top Bar Mock */}
+                        <div className="absolute top-0 inset-x-0 h-8 flex items-center justify-center z-30 pointer-events-none">
+                            <div className="w-24 h-5 bg-black rounded-b-2xl shadow-inner border-x border-b border-white/5"></div>
                         </div>
                     </motion.div>
                 ))}
