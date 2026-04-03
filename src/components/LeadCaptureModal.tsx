@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Phone, X, CheckCircle2, ChevronRight } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { useTheme } from '@/context/ThemeContext';
 
 export default function LeadCaptureModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,9 +12,10 @@ export default function LeadCaptureModal() {
   const [phone, setPhone] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const { theme } = useTheme();
+  const isDarkMode = theme === 'dark';
 
   useEffect(() => {
-    // Listen for manual triggers from other components (like Editor)
     const handleTrigger = (e: any) => {
         setIsForced(e.detail?.forced || false);
         setIsOpen(true);
@@ -21,7 +23,6 @@ export default function LeadCaptureModal() {
 
     window.addEventListener('trigger-lead-modal', handleTrigger);
 
-    // Auto-show after 2 mins if not shown yet
     const hasShown = localStorage.getItem('lead_modal_shown');
     if (!hasShown) {
         const timer = setTimeout(() => {
@@ -38,15 +39,7 @@ export default function LeadCaptureModal() {
   }, []);
 
   const formatPhoneNumber = (value: string) => {
-    // Keep only digits
     const digits = value.replace(/\D/g, '');
-    
-    // Always start with 998 context
-    if (!digits.startsWith('998') && digits.length > 0) {
-        // user started typing without prefix or something
-    }
-
-    // Mask implementation: +998 (XX) XXX XX XX
     let formatted = '+998 ';
     const core = digits.startsWith('998') ? digits.slice(3) : digits;
     
@@ -56,16 +49,12 @@ export default function LeadCaptureModal() {
         if (i === 7) formatted += ' ';
         formatted += core[i];
     }
-
     return formatted;
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
-    // Strip everything to check digits
     const rawDigits = input.replace(/\D/g, '');
-    
-    // Only allow if it's less than or equal to 12 digits (998 + 9 digits)
     if (rawDigits.length <= 12) {
         setPhone(formatPhoneNumber(rawDigits));
     }
@@ -73,11 +62,10 @@ export default function LeadCaptureModal() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (phone.length < 17) return; // Full number check
+    if (phone.length < 17) return;
 
     setIsSubmitting(true);
     try {
-      // Save to Supabase leads table (assuming it exists or just for demo)
       const { error } = await supabase
         .from('leads')
         .insert([{ phone, source: window.location.pathname }]);
@@ -90,7 +78,6 @@ export default function LeadCaptureModal() {
       }, 2000);
     } catch (err) {
       console.error(err);
-      // Even if error (table missing), treat as success for user experience
       setIsSuccess(true);
       localStorage.setItem('lead_modal_shown', 'true');
       setTimeout(() => setIsOpen(false), 2000);
@@ -115,23 +102,26 @@ export default function LeadCaptureModal() {
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="relative w-full max-w-md bg-white rounded-[2.5rem] shadow-[0_50px_100px_rgba(0,0,0,0.4)] overflow-hidden"
+            className={`relative w-full max-w-md rounded-[2.5rem] shadow-[0_50px_100px_rgba(0,0,0,0.4)] overflow-hidden transition-all duration-500 ${
+                isDarkMode ? 'bg-[#141416] border border-white/5' : 'bg-white'
+            }`}
           >
-            {/* Design Elements */}
-            <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#E11D48]/10 rounded-full blur-3xl opacity-50" />
-            <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-[#E11D48]/5 rounded-full blur-3xl opacity-50" />
+            <div className={`absolute -top-24 -right-24 w-48 h-48 rounded-full blur-3xl opacity-50 ${isDarkMode ? 'bg-[#E11D48]/5' : 'bg-[#E11D48]/10'}`} />
+            <div className={`absolute -bottom-24 -left-24 w-48 h-48 rounded-full blur-3xl opacity-50 ${isDarkMode ? 'bg-[#E11D48]/2' : 'bg-[#E11D48]/5'}`} />
 
             {!isForced && (
                 <button 
                 onClick={() => setIsOpen(false)}
-                className="absolute top-6 right-6 p-2 text-gray-400 hover:text-gray-900 transition-all z-10"
+                className={`absolute top-6 right-6 p-2 transition-all z-10 ${isDarkMode ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-gray-900'}`}
                 >
-                <X size={20} />
+                    <X size={20} />
                 </button>
             )}
 
             <div className="p-10 pt-12 relative flex flex-col items-center text-center">
-              <div className="w-16 h-16 bg-[#E11D48]/5 rounded-full flex items-center justify-center text-[#E11D48] mb-6 ring-8 ring-[#E11D48]/5">
+              <div className={`w-16 h-16 rounded-full flex items-center justify-center text-[#E11D48] mb-6 ring-8 transition-all ${
+                  isDarkMode ? 'bg-white/5 ring-white/5' : 'bg-[#E11D48]/5 ring-[#E11D48]/5'
+              }`}>
                 <Phone size={28} />
               </div>
 
@@ -142,7 +132,7 @@ export default function LeadCaptureModal() {
                   className="space-y-4"
                 >
                   <CheckCircle2 size={60} className="text-green-500 mx-auto" />
-                  <h2 className="text-xl font-black text-gray-900 tracking-tight uppercase">Muvaffaqiyatli! ✅</h2>
+                  <h2 className={`text-xl font-black tracking-tight uppercase ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Muvaffaqiyatli! ✅</h2>
                   <p className="text-gray-500 text-sm leading-relaxed">
                     Siz bilan bog'lanamiz.
                   </p>
@@ -150,7 +140,7 @@ export default function LeadCaptureModal() {
               ) : (
                 <>
                   <div className="space-y-2 mb-8">
-                    <h2 className="text-xl font-black text-gray-900 tracking-tight leading-none uppercase">Raqamingizni Qoldiring</h2>
+                    <h2 className={`text-xl font-black tracking-tight leading-none uppercase ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Raqamingizni Qoldiring</h2>
                   </div>
 
                   <form onSubmit={handleSubmit} className="w-full space-y-4">
@@ -160,7 +150,11 @@ export default function LeadCaptureModal() {
                         value={phone}
                         onChange={handlePhoneChange}
                         placeholder="+998 __ ___ __ __"
-                        className="w-full px-8 py-5 bg-gray-50 border-2 border-transparent rounded-[1.5rem] focus:bg-white focus:border-[#E11D48]/20 focus:ring-4 focus:ring-[#E11D48]/5 outline-none transition-all text-lg font-black tracking-widest text-center text-gray-900"
+                        className={`w-full px-8 py-5 border-2 border-transparent rounded-[1.5rem] outline-none transition-all text-lg font-black tracking-widest text-center ${
+                            isDarkMode 
+                            ? 'bg-white/5 text-white focus:bg-white/10 focus:border-white/10 focus:ring-white/5' 
+                            : 'bg-gray-50 text-gray-900 focus:bg-white focus:border-[#E11D48]/20 focus:ring-[#E11D48]/5'
+                        }`}
                         required
                       />
                     </div>
