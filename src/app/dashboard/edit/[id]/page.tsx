@@ -196,13 +196,9 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
   useEffect(() => {
       const handleUpdated = (e: any) => {
           if (e.detail?.phone) {
-              setContent(prev => {
-                  const newState = { ...prev, phone: e.detail.phone };
-                  // After phone is updated, immediately proceed to save/export
-                  // This opens the PaymentModal automatically
-                  setTimeout(() => handleSave(), 100); 
-                  return newState;
-              });
+              setContent(prev => ({ ...prev, phone: e.detail.phone }));
+              // After phone is updated, proceed to save immediately with direct parameter
+              handleSave(e.detail.phone); 
           }
       };
       window.addEventListener('invitation-updated', handleUpdated);
@@ -217,12 +213,15 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
     });
   };
 
-  const handleSave = async () => {
+  const handleSave = async (forcedPhone?: string) => {
     setIsSaving(true);
     
     // Generate slug from names and date
     const finalSlug = generateSlug(content.groomName, content.brideName, content.date);
     
+    // Final content with potential forced phone
+    const finalContent = forcedPhone ? { ...content, phone: forcedPhone } : content;
+
     // 1. Always save to LocalStorage FIRST
     try {
         const localData = localStorage.getItem('taklifnoma_invitations');
@@ -230,14 +229,13 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
         const index = invites.findIndex((inv: any) => inv.id === id);
         
         if (index !== -1) {
-            invites[index] = { ...invites[index], slug: finalSlug, content: content, is_paid: isPaid };
+            invites[index] = { ...invites[index], slug: finalSlug, content: finalContent, is_paid: isPaid };
         } else {
-            invites.push({ id, slug: finalSlug, content, is_paid: isPaid });
+            invites.push({ id, slug: finalSlug, content: finalContent, is_paid: isPaid });
         }
         localStorage.setItem('taklifnoma_invitations', JSON.stringify(invites));
 
         // 2. Sync with Supabase (CRITICAL FOR ADMIN PANEL)
-        // Only try to sync if we have a real Supabase URL (not the placeholder)
         const hasRealDb = process.env.NEXT_PUBLIC_SUPABASE_URL && !process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder');
         
         if (hasRealDb) {
@@ -246,8 +244,8 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
                 .upsert({
                     id: id,
                     slug: finalSlug,
-                    content: content,
-                    phone: content.phone, 
+                    content: finalContent,
+                    phone: finalContent.phone, 
                     is_paid: isPaid
                 });
                 
@@ -279,23 +277,26 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
   const [isCopied, setIsCopied] = useState(false);
 
   const handleExport = () => {
-      // Prioritize checking the invitation's own phone field
-      if (content.phone) {
+      // 1. Check if we already have a valid phone number in the content
+      const isValidPhone = content.phone && content.phone.startsWith('+998') && content.phone.length >= 17;
+      
+      if (isValidPhone) {
           handleSave();
           return;
       }
 
-      // If missing from content, check if we captured it before in this session/browser
+      // 2. If missing, check if we have a valid one in localStorage
       const savedPhone = localStorage.getItem('user_phone');
-      if (savedPhone) {
-          // Found it! Silently associate and proceed
+      const isSavedValid = savedPhone && savedPhone.startsWith('+998') && savedPhone.length >= 17;
+
+      if (isSavedValid) {
+          // Found a real number! Associate and proceed immediately
           setContent(prev => ({ ...prev, phone: savedPhone }));
-          // Give React a tiny breath to update state before final save
-          setTimeout(() => handleSave(), 50); 
+          handleSave(savedPhone); // Direct pass for instant sync
           return;
       }
 
-      // If still missing, trigger the final forced modal
+      // 3. If still no valid number, force the modal
       window.dispatchEvent(new CustomEvent('trigger-lead-modal', { 
           detail: { 
               forced: true,
@@ -340,7 +341,7 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
                     {isPaid ? 'Faol ✅' : 'Chernovik (To\'lov kutilmoqda)'}
                 </div>
                 <button 
-                onClick={handleSave}
+                onClick={handleExport}
                 className="flex items-center gap-1.5 px-4 py-2 bg-[#E11D48] text-white rounded-xl transition-all shadow-lg shadow-[#E11D48]/20 hover:brightness-110 active:scale-95"
                 >
                     {isSaving ? <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Save size={14} />}
@@ -707,7 +708,7 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
           
           <div className="relative flex items-center justify-center -top-6">
               <button 
-                onClick={handleSave}
+                onClick={handleExport}
                 className="w-14 h-14 bg-[#E11D48] rounded-full flex items-center justify-center text-white shadow-xl shadow-[#E11D48]/30 active:scale-90 transition-all border-4 border-white dark:border-[#141416]"
               >
                   {isSaving ? <div className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin" /> : <Share2 size={24} />}
