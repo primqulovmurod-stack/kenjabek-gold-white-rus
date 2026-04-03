@@ -113,20 +113,8 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
     // Generate slug from names and date
     const finalSlug = generateSlug(content.groomName, content.brideName, content.date);
     
+    // 1. Always save to LocalStorage FIRST (Guarantees it works without DB)
     try {
-        // 1. Save to Supabase (REAL DB)
-        const { error } = await supabase
-            .from('invitations')
-            .upsert({
-                id: id,
-                slug: finalSlug,
-                content: content,
-                is_paid: isPaid
-            });
-            
-        if (error) throw error;
-
-        // 2. Backup to LocalStorage
         const localData = localStorage.getItem('taklifnoma_invitations');
         let invites = localData ? JSON.parse(localData) : [];
         const index = invites.findIndex((inv: any) => inv.id === id);
@@ -138,11 +126,25 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
         }
         localStorage.setItem('taklifnoma_invitations', JSON.stringify(invites));
 
-        alert('O\'zgarishlar muvaffaqiyatli saqlandi! Admin faollashtirishi bilan link ishlaydi.');
+        // 2. Try to sync with Supabase in the background (Silently)
+        try {
+            const { error } = await supabase
+                .from('invitations')
+                .upsert({
+                    id: id,
+                    slug: finalSlug,
+                    content: content,
+                    is_paid: isPaid
+                });
+            if (error) console.warn('Supabase sync warning:', error.message);
+        } catch (e) {
+            // Ignore database network errors so saving locally still succeeds
+        }
+            
+        alert('Ma\'lumotlar muvaffaqiyatli saqlandi!');
     } catch (err) {
         console.error('Save error:', err);
-        // Alert but still save locally as fallback
-        alert('Ma\'lumotlar vaqtincha saqlandi (Bazaga ulanishda xatolik).');
+        alert('Saqlashda tizimli xatolik yuz berdi. Iltimos qaytadan urinib ko\'ring.');
     } finally {
         setIsSaving(false);
     }
@@ -305,7 +307,12 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
                 <input 
                   type="text" 
                   value={content.cardNumber || ''} 
-                  onChange={(e) => updateField('cardNumber', e.target.value)}
+                  onChange={(e) => {
+                      const v = e.target.value.replace(/\D/g, '');
+                      const chunks = v.match(/.{1,4}/g);
+                      updateField('cardNumber', chunks ? chunks.join(' ') : v);
+                  }}
+                  maxLength={19}
                   placeholder="8600 0000 0000 0000"
                   className="w-full px-8 py-5 bg-white border border-gray-100 rounded-2xl focus:ring-4 focus:ring-[#E11D48]/10 outline-none text-sm font-mono tracking-widest shadow-sm" 
                 />

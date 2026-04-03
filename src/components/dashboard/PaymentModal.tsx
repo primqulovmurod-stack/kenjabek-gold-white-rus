@@ -132,7 +132,12 @@ export default function PaymentModal({
                                     placeholder="8600 **** **** ****"
                                     className="w-full pl-16 pr-6 py-5 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-[#E11D48]/5 focus:border-[#E11D48]/30 outline-none transition-all text-sm font-black tracking-widest"
                                     value={formData.cardNumber}
-                                    onChange={(e) => setFormData({...formData, cardNumber: e.target.value})}
+                                    onChange={(e) => {
+                                        const v = e.target.value.replace(/\D/g, '');
+                                        const chunks = v.match(/.{1,4}/g);
+                                        setFormData({...formData, cardNumber: chunks ? chunks.join(' ') : v});
+                                    }}
+                                    maxLength={19}
                                 />
                             </div>
                         </div>
