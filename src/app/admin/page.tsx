@@ -61,33 +61,80 @@ export default function AdminPanel() {
 
   const toggleStatus = async (id: string, currentStatus: boolean) => {
     const newStatus = !currentStatus;
+    
+    // 1. Optimistic Update (Immediate UI response)
     setInvitations(prev => prev.map(inv => 
         inv.id === id ? { ...inv, is_paid: newStatus } : inv
     ));
 
     try {
         const isPlaceholder = !process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder');
+        
         if (!isPlaceholder) {
-            await supabase
+            const { error } = await supabase
                 .from('invitations')
                 .update({ is_paid: newStatus })
                 .eq('id', id);
+            
+            if (error) {
+                console.error('SUPABASE UPDATE ERROR:', error);
+                
+                // Detailed alert for debugging
+                let msg = "Statusni o'zgartirib bo'lmadi.";
+                if (error.message?.includes('RLS') || error.code === '42501') {
+                    msg = "Xatolik: RLS Policy ruxsat bermayapti. Supabase'da 'invitations' jadvali uchun UPDATE huquqini (public) bering.";
+                }
+                alert(msg + "\n" + error.message);
+
+                // 2. Revert UI if DB failed
+                setInvitations(prev => prev.map(inv => 
+                    inv.id === id ? { ...inv, is_paid: currentStatus } : inv
+                ));
+            }
+        } else {
+            // Placeholder/LocalStorage updates
+            const localData = localStorage.getItem('taklifnoma_invitations');
+            if (localData) {
+                let invites = JSON.parse(localData);
+                invites = invites.map((inv: any) => inv.id === id ? { ...inv, is_paid: newStatus } : inv);
+                localStorage.setItem('taklifnoma_invitations', JSON.stringify(invites));
+            }
         }
-    } catch (err) {
-        console.error('Update error:', err);
+    } catch (err: any) {
+        console.error('Fatal toggle status error:', err);
+        // Revert local state
+        setInvitations(prev => prev.map(inv => 
+            inv.id === id ? { ...inv, is_paid: currentStatus } : inv
+        ));
     }
   };
 
   const deleteInvite = async (id: string) => {
     if (confirm('Ushbu taklifnomani bazadan butunlay o\'chirmoqchimisiz?')) {
+        const original = [...invitations];
         try {
             setInvitations(prev => prev.filter(inv => inv.id !== id));
+            
             const isPlaceholder = !process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder');
+            
             if (!isPlaceholder) {
-                await supabase.from('invitations').delete().eq('id', id);
+                const { error } = await supabase.from('invitations').delete().eq('id', id);
+                if (error) {
+                    console.error('DELETE ERROR:', error);
+                    alert("O'chirib bo'lmadi: " + error.message);
+                    setInvitations(original);
+                }
+            } else {
+                const localData = localStorage.getItem('taklifnoma_invitations');
+                if (localData) {
+                    let invites = JSON.parse(localData);
+                    invites = invites.filter((inv: any) => inv.id !== id);
+                    localStorage.setItem('taklifnoma_invitations', JSON.stringify(invites));
+                }
             }
-        } catch (err) {
+        } catch (err: any) {
             console.error('Delete error:', err);
+            setInvitations(original);
         }
     }
   };
