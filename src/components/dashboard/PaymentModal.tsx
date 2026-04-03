@@ -265,7 +265,7 @@ export default function PaymentModal({
                                     }`}
                                 >
                                     <Send size={14} className="group-hover:rotate-12 transition-transform" />
-                                    <span>Telegram orqali chek yuborish</span>
+                                    <span>Telegram orqali to'lov qilish</span>
                                 </a>
 
                                 <p className="pt-2 text-center flex items-center justify-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
