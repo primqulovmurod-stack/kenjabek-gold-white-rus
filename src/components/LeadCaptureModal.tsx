@@ -142,18 +142,15 @@ export default function LeadCaptureModal() {
                   className="space-y-4"
                 >
                   <CheckCircle2 size={60} className="text-green-500 mx-auto" />
-                  <h2 className="text-2xl font-black text-gray-900 tracking-tight">Rahmat! 👋</h2>
+                  <h2 className="text-xl font-black text-gray-900 tracking-tight uppercase">Muvaffaqiyatli! ✅</h2>
                   <p className="text-gray-500 text-sm leading-relaxed">
-                    Mutaxassislarimiz tez orada siz bilan bog'lanishadi.
+                    Siz bilan bog'lanamiz.
                   </p>
                 </motion.div>
               ) : (
                 <>
                   <div className="space-y-2 mb-8">
-                    <h2 className="text-2xl font-black text-gray-900 tracking-tight leading-none uppercase">Maslahat Kerakmi?</h2>
-                    <p className="text-gray-500 text-sm leading-relaxed px-4">
-                      Yordam kerak bo'lsa raqamingizni qoldiring, biz sizga o'zimiz qo'ng'iroq qilamiz!
-                    </p>
+                    <h2 className="text-xl font-black text-gray-900 tracking-tight leading-none uppercase">Raqamingizni Qoldiring</h2>
                   </div>
 
                   <form onSubmit={handleSubmit} className="w-full space-y-4">
@@ -166,7 +163,6 @@ export default function LeadCaptureModal() {
                         className="w-full px-8 py-5 bg-gray-50 border-2 border-transparent rounded-[1.5rem] focus:bg-white focus:border-[#E11D48]/20 focus:ring-4 focus:ring-[#E11D48]/5 outline-none transition-all text-lg font-black tracking-widest text-center text-gray-900"
                         required
                       />
-                      <div className="mt-2 text-[10px] font-bold text-gray-300 uppercase tracking-widest">Namunadagi: +998 00 000 00 00</div>
                     </div>
 
                     <button 
@@ -174,14 +170,10 @@ export default function LeadCaptureModal() {
                       disabled={isSubmitting || phone.length < 17}
                       className="group w-full py-5 bg-[#E11D48] text-white rounded-[1.5rem] font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-[#E11D48]/30 hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:grayscale"
                     >
-                      {isSubmitting ? 'Yuborilmoqda...' : 'MENG QO\'NG\'IROQ QILING'}
+                      {isSubmitting ? 'Yuborilmoqda...' : 'DAVOM ETISH'}
                       {!isSubmitting && <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" /> }
                     </button>
                   </form>
-
-                  <p className="mt-8 text-[9px] text-gray-400 font-bold uppercase tracking-widest opacity-60">
-                    Bepul maslahat olish • 1 daqiqa ichida bog'lanamiz
-                  </p>
                 </>
               )}
             </div>
