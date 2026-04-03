@@ -31,10 +31,10 @@ import PaymentModal from '@/components/dashboard/PaymentModal';
 
 const MUSIC_TRACKS = [
     { name: 'Die With A Smile (LADY GAGA)', url: '/assets/die_with_a_smile.mp3' },
-    { name: 'Million Atirgullar (Uzbek)', url: 'https://cdn.pixabay.com/audio/2022/03/15/audio_73f08985c4.mp3' },
-    { name: 'Classical Piano Wedding', url: 'https://cdn.pixabay.com/audio/2022/03/24/audio_34b5c777e4.mp3' },
-    { name: 'Romantic Guitar', url: 'https://cdn.pixabay.com/audio/2024/02/10/audio_51194380b2.mp3' },
-    { name: 'Soft Wedding Bells', url: 'https://www.youtube.com/watch?v=placeholder1' }
+    { name: 'Million Atirgullar (Uzbek)', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+    { name: 'Classical Piano Wedding', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
+    { name: 'Romantic Guitar', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
+    { name: 'Soft Wedding Bells', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3' }
 ];
 
 const INITIAL_CONTENT: InvitationContent = {
@@ -90,8 +90,8 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
         if (data.is_paid !== isPaid) {
             setIsPaid(data.is_paid);
             if (data.is_paid) {
-                // Show a small success toast or alert here if needed
-                console.log("Invitation activated!");
+                // Instantly open the success/share modal
+                setShowPayment(true);
             }
         }
         return data;
@@ -374,6 +374,7 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
                                       try {
                                           preview.pause();
                                           preview.src = track.url;
+                                          preview.load(); // Ensure new source is loaded
                                           preview.play().catch(e => console.log('Autoplay blocked'));
                                       } catch (e) { console.error(e); }
                                   }

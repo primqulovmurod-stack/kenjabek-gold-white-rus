@@ -34,6 +34,15 @@ export default function LuxuryDarkInvitation({
   const [isPlaying, setIsPlaying] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    if (audioRef.current) {
+        audioRef.current.load();
+        if (isPlaying) {
+            audioRef.current.play().catch(e => console.log('Autoplay blocked'));
+        }
+    }
+  }, [musicUrl]);
   
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({

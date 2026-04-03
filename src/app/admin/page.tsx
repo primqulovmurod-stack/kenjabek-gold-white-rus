@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle, XCircle, ExternalLink, Search, ShieldCheck, Heart, User, Trash2 } from 'lucide-react';
+import { CheckCircle, XCircle, ExternalLink, Search, ShieldCheck, Heart, User, Trash2, Send } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
 export default function AdminPanel() {
@@ -186,10 +186,36 @@ export default function AdminPanel() {
                                 <td className="px-8 py-6 text-right">
                                     <div className="flex items-center justify-end gap-2">
                                         <button 
-                                          onClick={() => deleteInvite(inv.id)}
+                                          onClick={(e) => {
+                                              e.stopPropagation();
+                                              const url = `https://taklifnoma.asia/${inv.slug}`;
+                                              window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent('Tabriklaymiz! Sizning taklifnomangiz tayyor va faollashtirildi! 💍✨ %0A%0AHavola: ')}${encodeURIComponent(url)}`, '_blank');
+                                          }}
+                                          className="p-3 bg-blue-50 text-blue-500 hover:bg-blue-100 rounded-xl transition-all flex items-center gap-1 group"
+                                          title="Telegram orqali yuborish"
+                                        >
+                                            <Send size={16} className="group-hover:translate-x-1 transition-transform" />
+                                            <span className="text-[9px] font-black uppercase hidden xl:inline">Share</span>
+                                        </button>
+                                        <button 
+                                          onClick={(e) => {
+                                              e.stopPropagation();
+                                              navigator.clipboard.writeText(`https://taklifnoma.asia/${inv.slug}`);
+                                              alert('Havola nusxalandi! ✅');
+                                          }}
+                                          className="p-3 bg-green-50 text-green-500 hover:bg-green-100 rounded-xl transition-all"
+                                          title="Nusxalash"
+                                        >
+                                            <ExternalLink size={16} />
+                                        </button>
+                                        <button 
+                                          onClick={(e) => {
+                                              e.stopPropagation();
+                                              deleteInvite(inv.id);
+                                          } }
                                           className="p-3 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
                                         >
-                                            <Trash2 size={20} />
+                                            <Trash2 size={18} />
                                         </button>
                                     </div>
                                 </td>

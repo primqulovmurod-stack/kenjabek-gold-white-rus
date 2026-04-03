@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CreditCard, Lock, CheckCircle, ShieldCheck, X, ArrowRight, Heart, Copy, Send, Clock, Share2 } from 'lucide-react';
+import { CreditCard, Lock, CheckCircle, ShieldCheck, X, ArrowRight, Heart, Copy, Send, Clock, Share2, ExternalLink } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
 interface PaymentModalProps {
@@ -137,47 +137,46 @@ export default function PaymentModal({
                     <div className="p-6 bg-gray-50 rounded-[2rem] border border-dashed border-gray-200 text-center space-y-4">
                         <div>
                             <p className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 mb-1">Taklifnoma ID va Statust</p>
-                            <div className="flex items-center justify-center gap-2">
-                                <p className="text-sm font-black text-[#E11D48] tracking-tighter uppercase">{slug || invitationId}</p>
-                                <span className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase ${isPaid ? 'bg-green-100 text-green-600' : 'bg-orange-100 text-orange-600 animate-pulse'}`}>
-                                    {isPaid ? 'FAOL ✅' : 'KUTILMOQDA ⏳'}
-                                </span>
+                            <div className="flex flex-col items-center gap-2">
+                                <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] shadow-sm ring-1 ${isPaid ? 'bg-green-50 text-green-600 ring-green-100' : 'bg-orange-50 text-orange-600 ring-orange-100 animate-pulse'}`}>
+                                    {isPaid ? 'Faollashtirilgan ✅' : 'Tasdiqlanish kutilmoqda ⏳'}
+                                </div>
                             </div>
                         </div>
                         
-                        <div className="flex flex-col gap-2">
-                            <button 
-                                onClick={handleCopy}
-                                disabled={!isPaid}
-                                className={`w-full flex items-center justify-center gap-3 py-4 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all border ${
-                                    isPaid 
-                                    ? 'bg-green-50 text-green-600 border-green-100 hover:bg-green-100 active:scale-95' 
-                                    : 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed opacity-60'
-                                }`}
-                            >
-                                {isPaid ? (
-                                    <>
-                                        {copied ? <CheckCircle size={14} /> : <Copy size={14} />}
-                                        {copied ? 'NUSXALANDI!' : 'HAVOLANI NUSXALASH'}
-                                    </>
-                                ) : (
-                                    <>
-                                        <Clock size={14} />
-                                        Tasdiqlangach nusxalash mumkin
-                                    </>
-                                )}
-                            </button>
-
-                            {isPaid && (
-                                <button 
-                                    onClick={handleShare}
-                                    className="w-full flex items-center justify-center gap-3 py-4 bg-[#229ED9] text-white rounded-xl font-black text-[10px] uppercase tracking-widest transition-all shadow-lg shadow-[#229ED9]/20 hover:brightness-110 active:scale-95"
-                                >
-                                    <Send size={14} />
-                                    Havolani yuborish (Telegram)
-                                </button>
-                            )}
-                        </div>
+                        {isPaid ? (
+                            <div className="space-y-6 pt-2 animate-fade-in">
+                                <div className="bg-gray-50/50 p-6 rounded-3xl border border-gray-100 flex flex-col items-center gap-3 text-center">
+                                    <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none">Sizning havolangiz:</p>
+                                    <p className="text-sm font-mono font-bold text-[#E11D48] tracking-widest break-all px-2">taklifnoma.asia/{slug}</p>
+                                </div>
+                                <div className="grid grid-cols-1 gap-3">
+                                    <button 
+                                        onClick={handleShare}
+                                        className="w-full flex items-center justify-center gap-4 py-5 bg-[#229ED9] text-white rounded-[1.5rem] font-black text-[11px] uppercase tracking-widest transition-all shadow-xl shadow-[#229ED9]/20 hover:brightness-110 active:scale-95"
+                                    >
+                                        <Send size={18} />
+                                        <span>TELEGRAM’DA ULASHISH</span>
+                                    </button>
+                                    <button 
+                                        onClick={handleCopy}
+                                        className={`w-full flex items-center justify-center gap-4 py-5 rounded-[1.5rem] font-black text-[11px] uppercase tracking-widest transition-all border-2 ${
+                                            copied 
+                                            ? 'bg-green-50 text-green-600 border-green-100' 
+                                            : 'bg-white text-gray-900 border-gray-100 hover:bg-gray-50 active:scale-95'
+                                        }`}
+                                    >
+                                        {copied ? <CheckCircle size={18} /> : <ExternalLink size={18} />}
+                                        <span>{copied ? 'NUSXALANDI!' : 'HAVOLANI NUSXALASH'}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="bg-gray-100/50 p-6 rounded-3xl border border-gray-100 flex items-center justify-center gap-3 grayscale opacity-60">
+                                <Clock size={16} className="text-gray-400" />
+                                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Tasdiqlangach ulashish mumkin</span>
+                            </div>
+                        )}
                     </div>
 
                     {!isPaid && (

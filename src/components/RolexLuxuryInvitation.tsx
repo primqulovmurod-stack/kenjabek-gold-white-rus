@@ -35,6 +35,15 @@ export default function RolexLuxuryInvitation({
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.load();
+      if (isPlaying) {
+        audioRef.current.play().catch(e => console.log('Autoplay blocked'));
+      }
+    }
+  }, [musicUrl]);
+
+  useEffect(() => {
     if (!isUnlocked) {
       document.body.style.overflow = 'hidden';
     } else {
