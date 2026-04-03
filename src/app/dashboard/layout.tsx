@@ -29,19 +29,8 @@ export default function DashboardLayout({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        // For local development, if session is not found, we'll suggest login
-        // but for now let's just mock a user to let them work on the UI
-        setUser({ email: 'test@example.com', user_metadata: { full_name: 'Murod' } });
-      } else {
-        setUser(session.user);
-      }
-      setLoading(false);
-    };
-    checkUser();
-  }, [router]);
+    setLoading(false);
+  }, []);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -52,7 +41,6 @@ export default function DashboardLayout({
     { name: 'Mening taklifnomalarim', icon: LayoutDashboard, href: '/dashboard' },
     { name: 'Yangi yaratish', icon: PlusCircle, href: '/dashboard/new' },
     { name: "To'lovlar", icon: CreditCard, href: '/dashboard/billing' },
-    { name: 'Profil', icon: User, href: '/dashboard/profile' },
   ];
 
   if (loading) {
@@ -96,23 +84,13 @@ export default function DashboardLayout({
           ))}
         </nav>
 
-        <div className="p-6 mt-auto border-t border-[#FFE4E6]/30">
-          <div className="bg-[#FFF1F2] rounded-2xl p-4 flex items-center gap-3 mb-4 border border-[#FFE4E6]/50">
-             <div className="w-10 h-10 rounded-full bg-[#E11D48] text-white flex items-center justify-center font-bold shadow-lg">
-                {user?.user_metadata?.full_name?.[0] || user?.email?.[0]?.toUpperCase()}
-             </div>
-             <div className="flex-1 min-w-0">
-                <p className="text-xs font-bold text-gray-900 truncate">{user?.user_metadata?.full_name || 'Mijoz'}</p>
-                <p className="text-[10px] text-gray-400 truncate">{user?.email}</p>
-             </div>
-          </div>
-          <button 
-            onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold text-red-400 hover:bg-red-50 transition-all hover:text-red-500"
-          >
-            <LogOut size={20} />
-            Chiqish
-          </button>
+        <div className="p-12 mb-8 text-center space-y-4">
+            <div className="w-16 h-16 bg-[#FFF1F2] rounded-3xl flex items-center justify-center text-[#E11D48] mx-auto shadow-sm">
+                <Heart size={32} fill="currentColor" />
+            </div>
+            <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] leading-relaxed px-4">
+                Baxtli kunlaringiz uchun <br /> Taklifnoma.Asia
+            </p>
         </div>
       </aside>
 
@@ -167,12 +145,12 @@ export default function DashboardLayout({
                 ))}
               </nav>
 
-              <button 
-                onClick={handleLogout}
-                className="mt-auto w-full flex items-center justify-center gap-3 py-4 rounded-2xl bg-red-50 text-red-500 font-bold"
-              >
-                <LogOut size={24} /> Chiqish
-              </button>
+              <div className="mt-auto p-12 text-center space-y-4">
+                <div className="w-12 h-12 bg-[#FFF1F2] rounded-2xl flex items-center justify-center text-[#E11D48] mx-auto">
+                    <Heart size={24} fill="currentColor" />
+                </div>
+                <p className="text-[9px] font-black text-gray-300 uppercase tracking-widest">Taklifnoma.Asia</p>
+              </div>
             </motion.aside>
           </>
         )}
