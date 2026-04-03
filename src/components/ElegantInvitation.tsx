@@ -18,7 +18,7 @@ export const ElegantInvitation: React.FC<ElegantInvitationProps> = ({ content })
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const { groomName, brideName, date, time, locationName, imageUrl, locationUrl, musicUrl } = content;
+  const { groomName, brideName, date, time, locationName, imageUrl, locationUrl, musicUrl, locationAddress } = content;
 
   // Premium Palette
   const ivory = "#FAF9F6";
@@ -55,10 +55,10 @@ export const ElegantInvitation: React.FC<ElegantInvitationProps> = ({ content })
     uz: {
       invitation: 'Taklifnoma',
       inviteText: 'Sizlarni qalbimiz to\'ridagi eng quvonchli kunimiz — nikoh oqshomimizga lutfan taklif etamiz. Bu kun biz uchun yangi hayot ostonasi bo\'lib, sizning ishtirokingiz davramizni yanada fayzli qiladi.',
-      date: '15-iyun, 2026-yil',
-      timeLabel: 'Vaqti: 18:00',
-      venue: 'HAYAT RECEPTION HALL',
-      location: 'Manzil: Toshkent sh., Mirzo Ulug\'bek tumani',
+      date: date || '15-iyun, 2026-yil',
+      timeLabel: `Vaqti: ${time || '18:00'}`,
+      venue: locationName || 'HAYAT RECEPTION HALL',
+      location: `Manzil: ${locationAddress || 'Toshkent sh., Mirzo Ulug\'bek tumani'}`,
       yandexMaps: 'Yandex Maps',
       googleMaps: 'Google Maps',
       giftTitle: 'To\'yona uchun',
@@ -78,10 +78,10 @@ export const ElegantInvitation: React.FC<ElegantInvitationProps> = ({ content })
     ru: {
       invitation: 'Приглашение',
       inviteText: 'Мы с большой радостью приглашаем вас разделить с нами самый счастливый день в нашей жизни — день нашей свадьбы. Ваше присутствие сделает этот праздник незабываемым.',
-      date: '15 июня, 2026 год',
-      timeLabel: 'Время: 18:00',
-      venue: 'HAYAT RECEPTION HALL',
-      location: 'Адрес: г. Ташкент, Мирзо-Улугбекский район',
+      date: date || '15 июня, 2026 год',
+      timeLabel: `Время: ${time || '18:00'}`,
+      venue: locationName || 'HAYAT RECEPTION HALL',
+      location: `Адрес: ${locationAddress || 'г. Ташкент, Мирзо-Улугбекский район'}`,
       yandexMaps: 'Yandex Карты',
       googleMaps: 'Google Карты',
       giftTitle: 'Для подарков',

@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { InvitationContent } from '@/lib/types';
+import { GiftSection } from '@/components/luxury/GiftSection';
 
 interface FloralInvitationProps {
   content: InvitationContent;
@@ -11,7 +12,7 @@ interface FloralInvitationProps {
 }
 
 export const FloralInvitation: React.FC<FloralInvitationProps> = ({ content, isLocked }) => {
-  const { groomName, brideName, date, time, locationName, imageUrl } = content;
+  const { groomName, brideName, date, time, locationName, imageUrl, cardNumber, cardName } = content;
 
   if (isLocked) {
     return (
@@ -126,12 +127,14 @@ export const FloralInvitation: React.FC<FloralInvitationProps> = ({ content, isL
               Xaritani ko'rish
             </button>
           </div>
+
+          <GiftSection cardNumber={cardNumber} cardName={cardName} />
         </motion.div>
 
         <div className="pt-20 pb-10 w-full">
           <div className="w-12 h-px bg-pink-100 mx-auto opacity-50"></div>
           <p className="mt-8 text-[8px] text-gray-300 uppercase tracking-[0.4em] font-medium italic">
-            onlinetaklifnoma.uz orqali yaratildi
+            taklifnoma.asia orqali yaratildi
           </p>
         </div>
       </motion.div>

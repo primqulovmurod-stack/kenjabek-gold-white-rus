@@ -4,9 +4,16 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
 
-export function GiftSection() {
+interface GiftSectionProps {
+  cardNumber?: string;
+  cardName?: string;
+}
+
+export function GiftSection({ 
+  cardNumber = "8600 1234 5678 9012", 
+  cardName = "MUROD P." 
+}: GiftSectionProps) {
   const [copied, setCopied] = useState(false);
-  const cardNumber = "8600 1234 5678 9012";
 
   const handleCopy = () => {
     navigator.clipboard.writeText(cardNumber.replace(/\s/g, ''));
@@ -60,7 +67,11 @@ export function GiftSection() {
                 {cardNumber}
               </div>
               
-              <div className="flex justify-center sm:justify-end items-end w-full">
+              <div className="flex justify-between items-end w-full">
+                <div className="flex flex-col">
+                  <span className="text-[8px] uppercase tracking-widest text-white/50 mb-1">Karta Egasi</span>
+                  <p className="text-sm font-bold text-white uppercase tracking-wider">{cardName}</p>
+                </div>
                 <button 
                   onClick={handleCopy}
                   className="group relative px-4 sm:px-6 py-2.5 sm:py-3 rounded-full border border-white/20 bg-white/10 hover:bg-white transition-all duration-300 backdrop-blur-md flex items-center gap-2 cursor-pointer focus:outline-none focus:ring-4 focus:ring-white/30"

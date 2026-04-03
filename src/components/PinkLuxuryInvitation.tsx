@@ -14,12 +14,16 @@ interface PinkLuxuryInvitationProps {
   musicUrl?: string;
   groomName?: string;
   brideName?: string;
+  cardNumber?: string;
+  cardName?: string;
 }
 
 export default function PinkLuxuryInvitation({
   musicUrl = "/assets/die_with_a_smile.mp3",
   groomName = "Xurshidbek",
-  brideName = "Mohinur"
+  brideName = "Mohinur",
+  cardNumber,
+  cardName
 }: PinkLuxuryInvitationProps) {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const audioRef = React.useRef<HTMLAudioElement | null>(null);
@@ -67,7 +71,7 @@ export default function PinkLuxuryInvitation({
         <CalendarSection />
         <VenueSection />
         <CountdownSection />
-        <GiftSection />
+        <GiftSection cardNumber={cardNumber} cardName={cardName} />
         
         <footer className="py-12 md:py-24 bg-[#F8FAFC] text-center border-t border-purple-50 flex flex-col items-center justify-center space-y-4 md:space-y-6 font-sans px-4">
           <div className="w-12 h-[3px] bg-purple-600 rounded-full" />

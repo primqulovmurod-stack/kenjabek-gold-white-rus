@@ -14,6 +14,8 @@ interface WatchDesignInvitationProps {
   locationAddress?: string;
   imageUrl?: string;
   musicUrl?: string;
+  cardNumber?: string;
+  cardName?: string;
 }
 
 export default function WatchDesignInvitation({
@@ -24,7 +26,9 @@ export default function WatchDesignInvitation({
   locationName = "Oqsaroy Koshonasi",
   locationAddress = "Surxondaryo viloyati, Sho'rchi tumani",
   imageUrl = "https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg",
-  musicUrl = "https://www.learningcontainer.com/wp-content/uploads/2020/02/Sample-MP3-File.mp3"
+  musicUrl = "https://www.learningcontainer.com/wp-content/uploads/2020/02/Sample-MP3-File.mp3",
+  cardNumber = "9860 1234 5678 9012",
+  cardName = "MUROD P."
 }: WatchDesignInvitationProps) {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -137,9 +141,9 @@ export default function WatchDesignInvitation({
              >
                 <div className="space-y-6">
                     <span className="text-[10px] tracking-[1.2em] text-[#D4AF37] uppercase font-bold block mb-4">Lahzalarning Soffigi</span>
-                    <h2 className="text-5xl xs:text-6xl md:text-8xl font-serif tracking-tighter italic text-white leading-[0.8]">
+                    <h2 className="text-4xl xs:text-5xl md:text-7xl font-serif tracking-tighter italic text-white leading-[0.8]">
                         {groomName} <br />
-                        <span className="text-3xl md:text-5xl opacity-40 block my-4">&</span>
+                        <span className="text-2xl md:text-4xl opacity-40 block my-4">&</span>
                         {brideName}
                     </h2>
                 </div>
@@ -164,9 +168,8 @@ export default function WatchDesignInvitation({
         {/* Dynamic Hero Section (Zenith Chronos Layout) */}
         <section className="relative min-h-screen w-full flex flex-col md:flex-row items-center justify-between pt-32 pb-20 px-8 md:px-24 overflow-hidden">
           
-          {/* Background Watermark */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none select-none">
-             <span className="text-[25vw] font-serif italic tracking-tighter leading-none">NIKOH</span>
+          <div className="absolute inset-0 flex items-center justify-center opacity-[0.02] pointer-events-none select-none">
+             <span className="text-[80px] sm:text-[120px] md:text-[200px] font-serif italic tracking-tighter leading-none">NIKOH</span>
           </div>
 
           {/* Left Text Content */}
@@ -177,9 +180,9 @@ export default function WatchDesignInvitation({
                 transition={{ duration: 1.5, delay: 0.8 }}
                 className="space-y-8"
              >
-                <div className="space-y-2">
-                    <span className="text-[10px] tracking-[0.8em] text-[#D4AF37] font-bold uppercase block">Abadiyatning Boshlanishi</span>
-                    <h1 className="text-5xl md:text-8xl font-serif tracking-tighter leading-[0.9] italic text-white pt-4">
+                <div className="space-y-4">
+                    <span className="text-[9px] tracking-[0.6em] text-[#D4AF37] font-bold uppercase block">Abadiyatning Boshlanishi</span>
+                    <h1 className="text-4xl md:text-7xl font-serif tracking-tighter leading-[0.9] italic text-white pt-2">
                        {groomName} <br />
                        <span className="text-[#D4AF37] opacity-60 italic pr-4">&</span> {brideName}
                     </h1>
@@ -236,14 +239,12 @@ export default function WatchDesignInvitation({
                     </button>
                 </div>
 
-                {/* Main Content Image Circle */}
                 <motion.div 
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={isUnlocked ? { scale: 1, opacity: 1 } : {}}
                   transition={{ duration: 1.5, delay: 1 }}
-                  className="relative w-[85%] h-[85%] rounded-full overflow-hidden border border-[#D4AF37]/20 p-2 bg-gradient-to-tr from-white/10 to-transparent"
+                  className="relative w-full aspect-square rounded-full overflow-hidden border border-[#D4AF37]/20 p-2 bg-gradient-to-tr from-white/10 to-transparent"
                 >
-                    <div className="absolute inset-0 bg-[#D4AF37]/5 mix-blend-overlay"></div>
                     <img 
                       src={imageUrl}
                       alt="Product"
@@ -349,17 +350,17 @@ export default function WatchDesignInvitation({
                         <div className="space-y-10">
                             <div>
                                 <p className="text-[9px] font-bold tracking-[0.5em] text-white/20 mb-3 uppercase">HISOBA RAQAMI</p>
-                                <p className="text-3xl md:text-4xl font-mono tracking-[0.2em] text-white/90">9860 1234 •••• 5678</p>
+                                <p className="text-3xl md:text-4xl font-mono tracking-[0.2em] text-white/90">{cardNumber}</p>
                             </div>
                             
                             <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
                                 <div>
                                     <p className="text-[9px] font-bold tracking-[0.5em] text-white/20 mb-2 uppercase">EGASI</p>
-                                    <p className="text-2xl font-serif italic text-[#D4AF37]">{groomName} P.</p>
+                                    <p className="text-2xl font-serif italic text-[#D4AF37]">{cardName}</p>
                                 </div>
                                 <button 
                                     onClick={() => {
-                                        navigator.clipboard.writeText("9860123456785678");
+                                        navigator.clipboard.writeText(cardNumber.replace(/\s/g, ''));
                                         alert("Nusxalandi!");
                                     }}
                                     className="w-full md:w-auto px-12 py-4 bg-[#D4AF37] text-black text-[11px] font-bold tracking-[0.4em] uppercase rounded-full shadow-lg hover:bg-white transition-all transform active:scale-95"

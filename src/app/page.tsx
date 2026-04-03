@@ -63,7 +63,6 @@ export default async function Page({
     host.includes('rolex') || 
     host.includes('xurshid') || 
     host.includes('mohinur') ||
-    host.includes('localhost') ||
     !!params.theme
   );
 

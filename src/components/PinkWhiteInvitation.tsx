@@ -22,7 +22,7 @@ interface PinkWhiteInvitationProps {
   time?: string;
   locationName?: string;
   locationAddress?: string;
-  locationLink?: string;
+  locationUrl?: string;
   imageUrl?: string;
   musicUrl?: string;
 }
@@ -37,7 +37,7 @@ export default function PinkWhiteInvitation({
   time = "19:00",
   locationName = "Demir (Asr)",
   locationAddress = "Sho'rchi tumani",
-  locationLink = "https://maps.google.com",
+  locationUrl = "https://maps.google.com",
   imageUrl = "https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg",
   musicUrl = "https://www.learningcontainer.com/wp-content/uploads/2020/02/Sample-MP3-File.mp3"
 }: PinkWhiteInvitationProps) {
@@ -333,7 +333,7 @@ export default function PinkWhiteInvitation({
 
                   <div className="pt-8">
                       <a 
-                          href={locationLink}
+                          href={locationUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           className={`w-full h-14 pink-shimmer text-white font-bold tracking-[0.3em] uppercase text-[11px] shadow-sm transition-all flex items-center justify-center gap-4 rounded-full active:scale-95`}

@@ -7,7 +7,23 @@ import { RSVPSection } from './milliy/RSVPSection';
 import { CalendarSection } from './luxury/CalendarSection';
 import { MapPin, Phone, MessageSquare } from 'lucide-react';
 
-export default function MilliyInvitation() {
+interface MilliyInvitationProps {
+  groomName?: string;
+  brideName?: string;
+  date?: string;
+  time?: string;
+  locationName?: string;
+  locationAddress?: string;
+}
+
+export default function MilliyInvitation({
+  groomName = "Xurshid",
+  brideName = "Mohinur",
+  date = "20 Iyun 2026",
+  time = "18:00",
+  locationName = '"Yagona" To\'yxonasi',
+  locationAddress = "Toshkent sh., Yunusobod t., 4-mavze, 12-uy"
+}: MilliyInvitationProps) {
   return (
     <main className="min-h-screen bg-milliy-background text-milliy-primary font-body overflow-x-hidden selection:bg-milliy-primary/10 selection:text-milliy-primary">
       
@@ -37,7 +53,7 @@ export default function MilliyInvitation() {
           </div>
           
           <h1 className="text-6xl md:text-8xl lg:text-9xl font-headline tracking-tighter leading-none italic">
-            Xurshid <br /> & <br /> Mohinur
+            {groomName} <br /> & <br /> {brideName}
           </h1>
 
           <div className="max-w-md mx-auto py-6">
@@ -67,7 +83,7 @@ export default function MilliyInvitation() {
           </p>
           
           <div className="mt-12 text-3xl md:text-4xl font-headline text-milliy-secondary">
-            20 Iyun 2026
+            {date}
           </div>
         </motion.div>
       </section>
@@ -91,8 +107,8 @@ export default function MilliyInvitation() {
               <h3 className="text-xl font-bold uppercase tracking-widest">Manzil</h3>
             </div>
             <div className="p-10 bg-milliy-background rounded-3xl border border-milliy-primary/10 shadow-sm">
-              <h4 className="text-2xl font-headline mb-3">&quot;Yagona&quot; To&apos;yxonasi</h4>
-              <p className="opacity-75 text-base italic mb-8">Toshkent sh., Yunusobod t., 4-mavze, 12-uy</p>
+              <h4 className="text-2xl font-headline mb-3">{locationName}</h4>
+              <p className="opacity-75 text-base italic mb-8">{locationAddress}</p>
               <button className="px-8 py-3.5 bg-milliy-primary text-white rounded-xl text-xs font-bold uppercase tracking-[0.2em] hover:bg-milliy-primary/95 transition-all shadow-sm active:scale-[0.99]">
                 Xaritadan ko&apos;rish
               </button>

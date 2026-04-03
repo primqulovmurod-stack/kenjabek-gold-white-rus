@@ -7,6 +7,10 @@ export interface InvitationContent {
   locationUrl: string;
   imageUrl: string;
   musicUrl: string;
+  theme: string;
+  locationAddress?: string;
+  cardName?: string;
+  cardNumber?: string;
 }
 
 export interface Invitation {
@@ -14,4 +18,6 @@ export interface Invitation {
   slug: string;
   is_paid: boolean;
   content: InvitationContent;
+  user_id?: string;
+  created_at?: string;
 }

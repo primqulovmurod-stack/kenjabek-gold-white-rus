@@ -1,141 +1,204 @@
 'use client';
 
-import React, { useState } from 'react';
-import { FloralInvitation } from '@/components/FloralInvitation';
-import { InvitationContent } from '@/lib/types';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { 
-  Heart, Calendar, MapPin, Music, Image as ImageIcon, 
-  Send, Lock, CheckCircle, Share2 
+  Plus, 
+  ExternalLink, 
+  Edit3, 
+  Trash2, 
+  CreditCard, 
+  CheckCircle,
+  Clock,
+  ChevronRight,
+  Heart
 } from 'lucide-react';
+import { Invitation } from '@/lib/types';
+import { supabase } from '@/lib/supabase';
 
-const defaultContent: InvitationContent = {
-  groomName: 'Ali',
-  brideName: 'Laylo',
-  date: '2026-05-15',
-  time: '18:00',
-  locationName: 'Tantana Milliy Taomlar Majmuasi',
-  locationUrl: 'https://maps.google.com',
-  imageUrl: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=600',
-  musicUrl: 'standard-love-1'
-};
+// Mock data for demonstration
+const mockInvitations: Invitation[] = [
+  {
+    id: '1',
+    slug: 'ali-laylo',
+    is_paid: true,
+    content: {
+      groomName: 'Ali',
+      brideName: 'Laylo',
+      date: '2026-05-15',
+      time: '18:00',
+      locationName: 'Tantana Milliy Taomlar',
+      locationUrl: '#',
+      imageUrl: '',
+      musicUrl: '',
+      theme: 'gold-white'
+    }
+  },
+  {
+    id: '2',
+    slug: 'behzod-dilfuza',
+    is_paid: false,
+    content: {
+      groomName: 'Behzod',
+      brideName: 'Dilfuza',
+      date: '2026-06-20',
+      time: '19:00',
+      locationName: 'Navro\'z To\'yxonasi',
+      locationUrl: '#',
+      imageUrl: '',
+      musicUrl: '',
+      theme: 'floral'
+    }
+  }
+];
 
 export default function DashboardPage() {
-  const [content, setContent] = useState<InvitationContent>(defaultContent);
-  const [isPaid, setIsPaid] = useState(false);
-  const [activeTab, setActiveTab] = useState<'edit' | 'preview'>('edit');
+  const [invitations, setInvitations] = useState<Invitation[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setContent(prev => ({ ...prev, [name]: value }));
+  useEffect(() => {
+    const fetchInvitations = async () => {
+      try {
+        const isPlaceholder = !process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder');
+        
+        if (isPlaceholder) {
+            // Local Storage Fallback
+            const localData = localStorage.getItem('taklifnoma_invitations');
+            if (localData) {
+                setInvitations(JSON.parse(localData));
+            } else {
+                // Initialize with mocks if empty
+                setInvitations(mockInvitations);
+                localStorage.setItem('taklifnoma_invitations', JSON.stringify(mockInvitations));
+            }
+        } else {
+            const { data, error } = await supabase.from('invitations').select('*');
+            if (error) throw error;
+            setInvitations(data || []);
+        }
+      } catch (err) {
+        console.error('Fetch error:', err);
+        setInvitations(mockInvitations);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInvitations();
+  }, []);
+
+  const handleDelete = (id: string) => {
+    if (confirm('Ushbu taklifnomani o\'chirib tashlamoqchimisiz?')) {
+        const updated = invitations.filter(inv => inv.id !== id);
+        setInvitations(updated);
+        localStorage.setItem('taklifnoma_invitations', JSON.stringify(updated));
+    }
   };
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-white">
-      <div className={`flex-1 overflow-y-auto border-r border-gray-50 p-6 lg:p-12 h-screen ${activeTab === 'preview' ? 'hidden lg:block' : 'block'}`}>
-        <div className="max-w-xl mx-auto space-y-12">
-          <header className="flex items-center justify-between">
-            <div className="space-y-1">
-              <h1 className="text-2xl font-serif font-bold text-gray-900 tracking-tight">Onlinetaklifnoma</h1>
-              <p className="text-xs text-gray-400 uppercase tracking-widest font-bold">Personal Studio</p>
-            </div>
-            <div className="flex items-center gap-2 px-3 py-1 bg-gray-50 rounded-full border border-gray-100 cursor-pointer" onClick={() => setIsPaid(!isPaid)}>
-               <div className={`w-2 h-2 rounded-full ${isPaid ? 'bg-green-400' : 'bg-orange-400'}`}></div>
-               <span className="text-[10px] font-bold uppercase text-gray-500">
-                 {isPaid ? 'Faol' : 'To\'lanmagan'}
-               </span>
-            </div>
-          </header>
+    <div className="p-6 md:p-12 space-y-12">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="space-y-2">
+            <h1 className="font-playfair text-4xl font-black text-gray-900 tracking-tight">Mening Taklifnomalarim</h1>
+            <p className="text-gray-400 text-sm font-black tracking-widest uppercase flex items-center gap-2">
+                <Heart size={14} className="text-[#E11D48]" fill="currentColor" />
+                Sizning barcha saqlangan loyihalaringiz
+            </p>
+        </div>
+        <Link 
+            href="/dashboard/new"
+            className="inline-flex items-center gap-3 bg-[#E11D48] text-white px-8 py-4 rounded-2xl font-black shadow-xl shadow-[#E11D48]/20 hover:scale-105 active:scale-95 transition-all text-[11px] uppercase tracking-widest"
+        >
+            <Plus size={20} strokeWidth={3} />
+            <span>YANGI YARATISH</span>
+        </Link>
+      </header>
 
-          <div className="space-y-10">
-            <section className="space-y-6">
-              <div className="flex items-center gap-2 text-pink-500">
-                <Heart size={16} fill="currentColor" />
-                <h3 className="text-xs font-bold uppercase tracking-widest">Asosiy Qahramonlar</h3>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <span className="text-[10px] font-bold text-gray-400 uppercase ml-1">Kuyov</span>
-                  <input name="groomName" value={content.groomName} onChange={handleInputChange} className="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-pink-50 focus:border-pink-200 transition-all text-sm outline-none font-medium" />
-                </div>
-                <div className="space-y-2">
-                  <span className="text-[10px] font-bold text-gray-400 uppercase ml-1">Kelin</span>
-                  <input name="brideName" value={content.brideName} onChange={handleInputChange} className="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-pink-50 focus:border-pink-200 transition-all text-sm outline-none font-medium" />
-                </div>
-              </div>
-            </section>
-
-            <section className="space-y-6">
-              <div className="flex items-center gap-2 text-blue-500">
-                <Calendar size={16} />
-                <h3 className="text-xs font-bold uppercase tracking-widest">Sana va Vaqt</h3>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <input type="date" name="date" value={content.date} onChange={handleInputChange} className="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-blue-50 focus:border-blue-100 transition-all text-sm outline-none" />
-                <input type="time" name="time" value={content.time} onChange={handleInputChange} className="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-blue-50 focus:border-blue-100 transition-all text-sm outline-none" />
-              </div>
-            </section>
-
-            <section className="space-y-6">
-              <div className="flex items-center gap-2 text-orange-500">
-                <MapPin size={16} />
-                <h3 className="text-xs font-bold uppercase tracking-widest">Manzil</h3>
-              </div>
-              <div className="space-y-4">
-                <input placeholder="Restoran nomi" name="locationName" value={content.locationName} onChange={handleInputChange} className="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-orange-50 focus:border-orange-100 transition-all text-sm outline-none" />
-                <input placeholder="Xarita havolasi" name="locationUrl" value={content.locationUrl} onChange={handleInputChange} className="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-orange-50 focus:border-orange-100 transition-all text-[10px] font-mono outline-none" />
-              </div>
-            </section>
-
-            <section className="space-y-6">
-               <div className="flex items-center gap-2 text-indigo-500">
-                <Music size={16} />
-                <h3 className="text-xs font-bold uppercase tracking-widest">Musiqa va Surat</h3>
-              </div>
-              <div className="grid grid-cols-1 gap-4">
-                 <select name="musicUrl" value={content.musicUrl} onChange={handleInputChange} className="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-indigo-50 outline-none appearance-none cursor-pointer text-sm">
-                    <option value="standard-love-1">Classic Wedding Waltz</option>
-                    <option value="standard-love-2">Soft Oriental Piano</option>
-                    <option value="standard-love-3">Modern Floral Pop</option>
-                 </select>
-                 <div className="flex gap-4">
-                    <input placeholder="Rasm havolasi" name="imageUrl" value={content.imageUrl} onChange={handleInputChange} className="flex-1 px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-gray-50 transition-all text-[10px] outline-none" />
-                    <button className="px-6 bg-gray-900 text-white rounded-2xl hover:bg-black transition-all flex items-center gap-2">
-                       <ImageIcon size={16} />
-                       <span className="text-xs font-bold uppercase">Upload</span>
-                    </button>
-                 </div>
-              </div>
-            </section>
+      {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3].map(i => (
+                  <div key={i} className="h-80 bg-white rounded-3xl animate-pulse"></div>
+              ))}
           </div>
+      ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {invitations.map((invite) => (
+                  <motion.div 
+                    key={invite.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    whileHover={{ y: -5 }}
+                    className="bg-white rounded-[2.5rem] border border-[#EAD0A8]/20 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.03)] overflow-hidden flex flex-col group"
+                  >
+                      <div className="aspect-video bg-gray-50 flex items-center justify-center p-8 relative overflow-hidden">
+                          <div className="absolute inset-0 opacity-10 bg-gradient-to-tr from-[#E11D48] to-transparent"></div>
+                          <div className="relative text-center space-y-2">
+                              <h3 className="font-playfair text-2xl font-black text-[#2D2424]">
+                                  {invite.content.groomName} & {invite.content.brideName}
+                              </h3>
+                              <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">{invite.content.theme}</p>
+                          </div>
+                          <div className="absolute top-6 right-6">
+                              <div className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest border ${
+                                  invite.is_paid 
+                                  ? 'bg-green-50 text-green-600 border-green-100' 
+                                  : 'bg-orange-50 text-orange-600 border-orange-100'
+                              }`}>
+                                  {invite.is_paid ? 'Faol' : 'To\'lanmagan'}
+                              </div>
+                          </div>
+                      </div>
 
-          <footer className="pt-10 flex flex-col gap-4">
-             <button disabled={!isPaid} className={`w-full py-5 rounded-2xl font-bold tracking-widest text-xs uppercase flex items-center justify-center gap-4 transition-all ${isPaid ? 'bg-blue-500 text-white shadow-lg shadow-blue-50 active:scale-95' : 'bg-gray-100 text-gray-300 cursor-not-allowed'}`}>
-                {isPaid ? <Send size={18} /> : <Lock size={18} />}
-                Telegramda ulashish
-             </button>
-          </footer>
-        </div>
-      </div>
+                      <div className="p-8 space-y-6 flex-1">
+                          <div className="space-y-4">
+                              <div className="flex items-center gap-3 text-gray-500 text-sm font-bold">
+                                  <Clock size={16} className="text-[#E11D48]" />
+                                  <span>{invite.content.date} • {invite.content.time}</span>
+                              </div>
+                              <div className="text-[10px] font-black text-[#E11D48] tracking-widest uppercase">
+                                  Link: <span className="text-gray-400 font-medium lowercase">taklifnoma.asia/{invite.slug}</span>
+                              </div>
+                          </div>
 
-      <div className={`flex-1 bg-gray-50/50 p-6 flex flex-col items-center justify-center min-h-screen ${activeTab === 'edit' ? 'hidden lg:flex' : 'flex'}`}>
-        <div className="relative w-full max-w-sm">
-           <div className="relative aspect-[9/19] w-full bg-white rounded-[3.5rem] shadow-[0_60px_120px_-30px_rgba(0,0,0,0.1)] border-[14px] border-gray-950 overflow-hidden ring-8 ring-white">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-7 bg-gray-950 rounded-b-3xl z-50"></div>
-              <div className="w-full h-full overflow-y-auto scrollbar-hide bg-white">
-                <FloralInvitation content={content} />
-              </div>
-           </div>
-           <button onClick={() => setActiveTab('edit')} className="fixed bottom-8 left-1/2 -translate-x-1/2 lg:hidden px-8 py-4 bg-gray-900 text-white rounded-full shadow-2xl font-bold uppercase tracking-widest text-[10px] z-[100] border border-gray-700">
-             Tahrirlashga qaytish
-           </button>
-        </div>
-        <p className="mt-8 text-[10px] font-bold text-gray-300 uppercase tracking-[0.3em]">Jonli ko'rinish • Real-time Preview</p>
-      </div>
+                           <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[#FFE4E6]/20 relative">
+                             <button 
+                               onClick={() => handleDelete(invite.id!)}
+                               className="absolute -top-12 right-0 p-2 text-gray-300 hover:text-red-500 transition-colors z-10"
+                             >
+                               <Trash2 size={16} />
+                             </button>
+                              <Link 
+                                href={`/dashboard/edit/${invite.id}`}
+                                className="flex items-center justify-center gap-2 py-4 bg-gray-50 text-gray-600 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-[#E11D48]/5 hover:text-[#E11D48] transition-all border border-transparent hover:border-[#E11D48]/20"
+                              >
+                                  <Edit3 size={16} /> Tahrirlash
+                              </Link>
+                              <Link 
+                                href={`/${invite.slug}`}
+                                target="_blank"
+                                className="flex items-center justify-center gap-2 py-4 border border-[#FFE4E6]/50 text-[#E11D48] rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-[#E11D48] hover:text-white transition-all shadow-sm"
+                              >
+                                  <ExternalLink size={16} /> Ko'rish
+                              </Link>
+                          </div>
+                      </div>
+                  </motion.div>
+              ))}
 
-      <button onClick={() => setActiveTab('preview')} className={`fixed bottom-8 right-8 lg:hidden w-16 h-16 rounded-full bg-pink-600 text-white shadow-2xl z-[90] flex items-center justify-center ${activeTab === 'preview' ? 'hidden' : 'flex'}`}>
-         <Share2 />
-      </button>
+              {/* Empty State / New project placeholder */}
+               <Link 
+                href="/dashboard/new"
+                className="h-full min-h-[320px] bg-white rounded-[2.5rem] border-2 border-dashed border-[#FFE4E6] flex flex-col items-center justify-center p-8 group hover:border-[#E11D48] hover:bg-[#FFF1F2] transition-all text-center"
+              >
+                  <div className="w-16 h-16 rounded-full bg-[#E11D48]/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                      <Plus className="text-[#E11D48]" size={32} strokeWidth={3} />
+                  </div>
+                  <h4 className="font-black text-gray-900 mb-2 uppercase tracking-widest text-[11px]">Yangi Taklifnoma</h4>
+                  <p className="text-gray-400 text-[10px] font-black uppercase tracking-tighter">Boshqa loyihani boshlang</p>
+              </Link>
+          </div>
+      )}
     </div>
   );
 }
