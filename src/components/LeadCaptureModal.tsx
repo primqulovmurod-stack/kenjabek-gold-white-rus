@@ -7,20 +7,34 @@ import { supabase } from '@/lib/supabase';
 
 export default function LeadCaptureModal() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isForced, setIsForced] = useState(false);
   const [phone, setPhone] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
-    // Check if showing leads is already done in this session
+    // Listen for manual triggers from other components (like Editor)
+    const handleTrigger = (e: any) => {
+        setIsForced(e.detail?.forced || false);
+        setIsOpen(true);
+    };
+
+    window.addEventListener('trigger-lead-modal', handleTrigger);
+
+    // Auto-show after 2 mins if not shown yet
     const hasShown = localStorage.getItem('lead_modal_shown');
-    if (hasShown) return;
+    if (!hasShown) {
+        const timer = setTimeout(() => {
+          setIsOpen(true);
+          setIsForced(false);
+        }, 120000); 
+        return () => {
+            clearTimeout(timer);
+            window.removeEventListener('trigger-lead-modal', handleTrigger);
+        };
+    }
 
-    const timer = setTimeout(() => {
-      setIsOpen(true);
-    }, 120000); // 120,000 ms = 120 seconds = 2 minutes
-
-    return () => clearTimeout(timer);
+    return () => window.removeEventListener('trigger-lead-modal', handleTrigger);
   }, []);
 
   const formatPhoneNumber = (value: string) => {
@@ -93,8 +107,8 @@ export default function LeadCaptureModal() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setIsOpen(false)}
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => !isForced && setIsOpen(false)}
+            className={`absolute inset-0 bg-black/60 backdrop-blur-sm ${isForced ? 'cursor-default' : 'cursor-pointer'}`}
           />
           
           <motion.div 
@@ -107,12 +121,14 @@ export default function LeadCaptureModal() {
             <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#E11D48]/10 rounded-full blur-3xl opacity-50" />
             <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-[#E11D48]/5 rounded-full blur-3xl opacity-50" />
 
-            <button 
-              onClick={() => setIsOpen(false)}
-              className="absolute top-6 right-6 p-2 text-gray-400 hover:text-gray-900 transition-all z-10"
-            >
-              <X size={20} />
-            </button>
+            {!isForced && (
+                <button 
+                onClick={() => setIsOpen(false)}
+                className="absolute top-6 right-6 p-2 text-gray-400 hover:text-gray-900 transition-all z-10"
+                >
+                <X size={20} />
+                </button>
+            )}
 
             <div className="p-10 pt-12 relative flex flex-col items-center text-center">
               <div className="w-16 h-16 bg-[#E11D48]/5 rounded-full flex items-center justify-center text-[#E11D48] mb-6 ring-8 ring-[#E11D48]/5">

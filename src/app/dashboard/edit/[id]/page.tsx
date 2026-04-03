@@ -248,6 +248,11 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
   const [isCopied, setIsCopied] = useState(false);
 
   const handleExport = () => {
+      const hasPhone = localStorage.getItem('lead_modal_shown');
+      if (!hasPhone) {
+          window.dispatchEvent(new CustomEvent('trigger-lead-modal', { detail: { forced: true } }));
+          return;
+      }
       handleSave();
   };
 
