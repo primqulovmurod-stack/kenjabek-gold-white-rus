@@ -12,7 +12,9 @@ import {
   CheckCircle,
   Clock,
   ChevronRight,
-  Heart
+  Heart,
+  Moon,
+  Sun
 } from 'lucide-react';
 import { Invitation } from '@/lib/types';
 import { supabase } from '@/lib/supabase';
@@ -56,8 +58,13 @@ const mockInvitations: Invitation[] = [
 export default function DashboardPage() {
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
+    // Check local storage for theme
+    const savedTheme = localStorage.getItem('dashboard_theme');
+    if (savedTheme === 'dark') setIsDarkMode(true);
+
     const fetchInvitations = async () => {
       try {
         const isPlaceholder = !process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder');
@@ -96,15 +103,37 @@ export default function DashboardPage() {
     }
   };
 
+  const toggleTheme = () => {
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
+    localStorage.setItem('dashboard_theme', newMode ? 'dark' : 'light');
+  };
+
   return (
-    <div className="p-6 md:p-12 pb-24 space-y-12">
+    <div className={`min-h-screen transition-all duration-500 p-6 md:p-12 pb-24 space-y-12 ${isDarkMode ? 'bg-[#0F0F10]' : 'bg-[#FFF9FA]'}`}>
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="space-y-2">
-            <h1 className="font-playfair text-4xl font-black text-gray-900 tracking-tight">Mening Taklifnomalarim</h1>
-            <p className="text-gray-400 text-sm font-black tracking-widest uppercase flex items-center gap-2">
-                <Heart size={14} className="text-[#E11D48]" fill="currentColor" />
-                Sizning barcha saqlangan loyihalaringiz
-            </p>
+            <h1 className={`font-playfair text-4xl font-black tracking-tight transition-colors ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Mening Taklifnomalarim</h1>
+            <div className="flex items-center gap-4">
+                <p className="text-gray-400 text-sm font-black tracking-widest uppercase flex items-center gap-2">
+                    <Heart size={14} className="text-[#E11D48]" fill="currentColor" />
+                    Sizning barcha saqlangan loyihalaringiz
+                </p>
+                
+                <button 
+                  onClick={toggleTheme}
+                  className={`p-2 rounded-xl transition-all shadow-sm flex items-center gap-2 border ${
+                    isDarkMode 
+                    ? 'bg-[#18181B] border-white/5 text-yellow-400' 
+                    : 'bg-white border-[#FFE4E6] text-gray-400 hover:text-[#E11D48]'
+                  }`}
+                >
+                    {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+                    <span className="text-[9px] font-black uppercase tracking-widest leading-none">
+                      {isDarkMode ? 'KUN' : 'TUN'}
+                    </span>
+                </button>
+            </div>
         </div>
         <Link 
             href="/dashboard/new"
@@ -129,12 +158,16 @@ export default function DashboardPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     whileHover={{ y: -5 }}
-                    className="bg-white rounded-[2.5rem] border border-[#EAD0A8]/20 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.03)] overflow-hidden flex flex-col group"
+                    className={`rounded-[2.5rem] border transition-all duration-300 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.03)] overflow-hidden flex flex-col group ${
+                        isDarkMode 
+                        ? 'bg-[#18181B] border-white/5' 
+                        : 'bg-white border-[#EAD0A8]/20'
+                    }`}
                   >
-                      <div className="aspect-video bg-gray-50 flex items-center justify-center p-8 relative overflow-hidden">
+                      <div className={`aspect-video flex items-center justify-center p-8 relative overflow-hidden transition-colors ${isDarkMode ? 'bg-[#1E1E22]' : 'bg-gray-50'}`}>
                           <div className="absolute inset-0 opacity-10 bg-gradient-to-tr from-[#E11D48] to-transparent"></div>
                           <div className="relative text-center space-y-2">
-                              <h3 className="font-playfair text-2xl font-black text-[#2D2424]">
+                              <h3 className={`font-playfair text-2xl font-black transition-colors ${isDarkMode ? 'text-white' : 'text-[#2D2424]'}`}>
                                   {invite.content.groomName} & {invite.content.brideName}
                               </h3>
                               <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">{invite.content.theme}</p>
@@ -142,8 +175,8 @@ export default function DashboardPage() {
                           <div className="absolute top-6 right-6">
                               <div className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest border ${
                                   invite.is_paid 
-                                  ? 'bg-green-50 text-green-600 border-green-100' 
-                                  : 'bg-orange-50 text-orange-600 border-orange-100'
+                                  ? 'bg-green-500/10 text-green-500 border-green-500/20' 
+                                  : 'bg-orange-500/10 text-orange-500 border-orange-500/20'
                               }`}>
                                   {invite.is_paid ? 'Faol ✅' : 'Chernovik'}
                               </div>
@@ -152,32 +185,40 @@ export default function DashboardPage() {
 
                       <div className="p-8 space-y-6 flex-1">
                           <div className="space-y-4">
-                              <div className="flex items-center gap-3 text-gray-500 text-sm font-bold">
+                              <div className={`flex items-center gap-3 text-sm font-bold transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                                   <Clock size={16} className="text-[#E11D48]" />
                                   <span>{invite.content.date} • {invite.content.time}</span>
                               </div>
                               <div className="text-[10px] font-black text-[#E11D48] tracking-widest uppercase">
-                                  Taklifnoma Linki: <span className="text-gray-400 font-medium lowercase">taklifnoma.asia/{invite.slug}</span>
+                                  Taklifnoma Linki: <span className={`font-medium lowercase transition-colors ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>taklifnoma.asia/{invite.slug}</span>
                               </div>
                           </div>
 
-                           <div className="grid grid-cols-2 gap-4 pt-4 border-t border-[#FFE4E6]/20 relative">
+                           <div className={`grid grid-cols-2 gap-4 pt-4 border-t relative transition-colors ${isDarkMode ? 'border-white/5' : 'border-[#FFE4E6]/20'}`}>
                              <button 
                                onClick={() => handleDelete(invite.id!)}
-                               className="absolute -top-12 right-0 p-2 text-gray-300 hover:text-red-500 transition-colors z-10"
+                               className="absolute -top-12 right-0 p-2 text-gray-400 hover:text-red-500 transition-colors z-10"
                              >
                                <Trash2 size={16} />
                              </button>
                               <Link 
                                 href={`/dashboard/edit/${invite.id}`}
-                                className="flex items-center justify-center gap-2 py-4 bg-gray-50 text-gray-600 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-[#E11D48]/5 hover:text-[#E11D48] transition-all border border-transparent hover:border-[#E11D48]/20"
+                                className={`flex items-center justify-center gap-2 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all border ${
+                                    isDarkMode 
+                                    ? 'bg-[#1E1E22] text-gray-300 border-white/5 hover:bg-[#E11D48] hover:text-white' 
+                                    : 'bg-gray-50 text-gray-600 border-transparent hover:bg-[#E11D48]/5 hover:text-[#E11D48] hover:border-[#E11D48]/20'
+                                }`}
                               >
                                   <Edit3 size={16} /> Tahrirlash
                               </Link>
                               <Link 
                                 href={`/${invite.slug}`}
                                 target="_blank"
-                                className="flex items-center justify-center gap-2 py-4 border border-[#FFE4E6]/50 text-[#E11D48] rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-[#E11D48] hover:text-white transition-all shadow-sm"
+                                className={`flex items-center justify-center gap-2 py-4 border rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all shadow-sm ${
+                                    isDarkMode 
+                                    ? 'border-white/10 text-white bg-white/5 hover:bg-[#E11D48]' 
+                                    : 'border-[#FFE4E6]/50 text-[#E11D48] hover:bg-[#E11D48] hover:text-white'
+                                }`}
                               >
                                   <ExternalLink size={16} /> Ko'rish
                               </Link>
@@ -189,13 +230,17 @@ export default function DashboardPage() {
               {/* Empty State / New project placeholder */}
                <Link 
                 href="/dashboard/new"
-                className="h-full min-h-[320px] bg-white rounded-[2.5rem] border-2 border-dashed border-[#FFE4E6] flex flex-col items-center justify-center p-8 group hover:border-[#E11D48] hover:bg-[#FFF1F2] transition-all text-center"
+                className={`h-full min-h-[320px] rounded-[2.5rem] border-2 border-dashed flex flex-col items-center justify-center p-8 group transition-all text-center ${
+                    isDarkMode 
+                    ? 'bg-[#18181B] border-white/10 hover:border-[#E11D48] hover:bg-[#E11D48]/5' 
+                    : 'bg-white border-[#FFE4E6] hover:border-[#E11D48] hover:bg-[#FFF1F2]'
+                }`}
               >
                   <div className="w-16 h-16 rounded-full bg-[#E11D48]/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                       <Plus className="text-[#E11D48]" size={32} strokeWidth={3} />
                   </div>
-                  <h4 className="font-black text-gray-900 mb-2 uppercase tracking-widest text-[11px]">Yangi Taklifnoma</h4>
-                  <p className="text-gray-400 text-[10px] font-black uppercase tracking-tighter">Boshqa loyihani boshlang</p>
+                  <h4 className={`font-black mb-2 uppercase tracking-widest text-[11px] transition-colors ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Yangi Taklifnoma</h4>
+                  <p className="text-gray-500 text-[10px] font-black uppercase tracking-tighter">Boshqa loyihani boshlang</p>
               </Link>
           </div>
       )}
