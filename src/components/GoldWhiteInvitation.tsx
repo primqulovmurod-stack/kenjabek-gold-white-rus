@@ -70,6 +70,29 @@ export default function GoldWhiteInvitation({
       <div className={`w-full max-w-[500px] bg-white min-h-screen relative shadow-[0_0_100px_rgba(0,0,0,0.05)]`}>
         <audio ref={audioRef} src={musicUrl} loop />
 
+        {/* Global Mute Toggle for Viewer */}
+        {isOpened && musicUrl && (
+            <motion.button
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                onClick={() => {
+                    if (audioRef.current) {
+                        if (isPlaying) {
+                            audioRef.current.pause();
+                        } else {
+                            audioRef.current.play();
+                        }
+                        setIsPlaying(!isPlaying);
+                    }
+                }}
+                className="fixed bottom-24 right-6 z-[120] w-14 h-14 bg-white/80 backdrop-blur-xl border border-[#D4AF37]/30 rounded-full flex items-center justify-center text-[#D4AF37] shadow-2xl shadow-black/10 active:scale-90 transition-all group"
+            >
+                <div className={`relative transition-transform duration-500 ${isPlaying ? 'animate-[spin_4s_linear_infinite]' : ''}`}>
+                    {isPlaying ? <Volume2 size={24} /> : <VolumeX size={24} />}
+                </div>
+            </motion.button>
+        )}
+
         <AnimatePresence>
           {!isOpened && (
             <div className="absolute inset-0 z-[100] flex flex-col items-center justify-start pt-12 bg-white p-6">
