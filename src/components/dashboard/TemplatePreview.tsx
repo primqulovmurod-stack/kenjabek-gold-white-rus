@@ -33,30 +33,6 @@ export const templates = [
     name: 'Pink Luxury Special', 
     image: 'https://images.pexels.com/photos/1035665/pexels-photo-1035665.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     style: 'Modern & Soft'
-  },
-  {
-    id: 'rolex', 
-    name: 'Rolex Luxury Edition',
-    image: 'https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg',
-    style: 'Modern & Elite'
-  },
-  {
-    id: 'gold-white',
-    name: 'Gold & White Classic',
-    image: 'https://images.pexels.com/photos/2253842/pexels-photo-2253842.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    style: 'Elegant & Classic'
-  },
-  {
-    id: 'pink-white',
-    name: 'Pink Romance Edition',
-    image: 'https://images.pexels.com/photos/1035665/pexels-photo-1035665.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    style: 'Soft & Romantic'
-  },
-  {
-    id: 'luxury-dark',
-    name: 'Luxury Dark Special',
-    image: 'https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    style: 'Premium Dark'
   }
 ];
 
