@@ -63,9 +63,32 @@ export default function InvitationWrapper({ initialHost }: InvitationWrapperProp
   // Handle Xurshid's themes
   if (isXurshid) {
     if (hostLower.includes('pink') || theme === 'pink') {
-      content = <PinkLuxuryInvitation groomName="Xurshidbek" brideName="Mohinur" />;
+      content = (
+        <PinkLuxuryInvitation 
+          groomName="Xurshidbek" 
+          brideName="Mohinur" 
+          date="20 Iyun 2026"
+          time="18:00"
+          locationName="Oqsaroy Koshonasi"
+          locationAddress="Surxondaryo viloyati, Sho'rchi tumani"
+          locationUrl="https://maps.google.com"
+          imageUrl="https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg"
+          musicUrl="/assets/die_with_a_smile.mp3"
+        />
+      );
     } else {
-      content = <RolexLuxuryInvitation groomName="Xurshidbek" brideName="Mohinur" />;
+      content = (
+        <RolexLuxuryInvitation 
+          groomName="Xurshidbek" 
+          brideName="Mohinur" 
+          date="20 Iyun 2026"
+          time="18:00"
+          locationName="Oqsaroy Koshonasi"
+          locationAddress="Surxondaryo viloyati, Sho'rchi tumani"
+          imageUrl="https://images.pexels.com/photos/30206324/pexels-photo-30206324/free-photo-of-elegant-gold-wedding-rings-on-marble-surface.jpeg"
+          musicUrl="/assets/die_with_a_smile.mp3"
+        />
+      );
     }
   } else if (theme === 'pink' || hostLower.includes('pink')) {
     content = (
