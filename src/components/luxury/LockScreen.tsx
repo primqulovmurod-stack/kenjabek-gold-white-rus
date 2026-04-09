@@ -68,7 +68,7 @@ export function LockScreen({ onUnlock, groomName, brideName }: LockScreenProps) 
           className="group relative flex items-center justify-center w-full max-w-[280px] h-14 overflow-hidden rounded-full bg-[#7E22CE] text-white shadow-xl shadow-purple-500/30 hover:-translate-y-1 transition-all duration-300"
         >
           <span className="relative z-10 font-bold text-sm tracking-wide flex items-center gap-3">
-            Ochish <span>&rarr;</span>
+            Taklifnomani ochish <span>&rarr;</span>
           </span>
           <div className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
         </button>
