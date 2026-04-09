@@ -29,8 +29,8 @@ interface PinkLuxuryInvitationProps {
 }
 
 export default function PinkLuxuryInvitation({
-  groomName,
-  brideName,
+  groomName = "Murod",
+  brideName = "Odina",
   date = "2026-04-24",
   time = "19:00",
   locationName = "Toshkent",

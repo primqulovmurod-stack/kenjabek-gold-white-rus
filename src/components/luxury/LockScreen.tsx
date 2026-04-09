@@ -11,7 +11,9 @@ interface LockScreenProps {
 
 export function LockScreen({ onUnlock, groomName, brideName }: LockScreenProps) {
   const getInitial = (name: string) => {
-    return name && name.length > 0 ? name[0].toUpperCase() : '';
+    if (!name || typeof name !== 'string') return '';
+    const trimmed = name.trim();
+    return trimmed.length > 0 ? trimmed[0].toUpperCase() : '';
   };
 
   return (
@@ -56,7 +58,7 @@ export function LockScreen({ onUnlock, groomName, brideName }: LockScreenProps) 
             Siz uchun maxsus taklifnoma
           </h2>
           <p className="text-sm text-[#64748B] font-medium">
-            Tafsilotlarni ko&apos;rish uchish tugmani bosing.
+            Tafsilotlarni ko&apos;rish uchun tugmani bosing.
           </p>
         </div>
 
