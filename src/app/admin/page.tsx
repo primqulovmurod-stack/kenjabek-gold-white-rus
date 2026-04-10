@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle, XCircle, ExternalLink, Search, ShieldCheck, Heart, Trash2, Send, Phone } from 'lucide-react';
+import { CheckCircle, XCircle, ExternalLink, Search, ShieldCheck, Heart, Trash2, Send, Phone, Mail } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useTheme } from '@/context/ThemeContext';
 
