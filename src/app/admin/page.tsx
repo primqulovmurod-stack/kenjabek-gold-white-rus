@@ -162,12 +162,15 @@ export default function AdminPanel() {
   };
 
   const deleteInvite = async (invId: string) => {
+    alert("O'chirish boshlandi! ID: " + invId);
+    console.log('DELETE REQUEST:', invId);
+    
     if (!invId) {
-        alert("XALOLIK: Taklifnoma ID topilmadi!");
+        alert("Xatolik: ID topilmadi!");
         return;
     }
 
-    const confirmed = window.confirm("Ushbu taklifnomani (+ rasm/fayllarni) butunlay o'chirib tashlamoqchimisiz?");
+    const confirmed = confirm("Ushbu taklifnomani o'chirib tashlamoqchimisiz?");
     if (!confirmed) return;
 
     const originalData = [...invitations];
@@ -260,8 +263,10 @@ export default function AdminPanel() {
                     <ShieldCheck size={16} /> Taklifnoma Asia Admin
                 </div>
                 <div className="flex items-center gap-4">
-                    <h1 className="font-serif text-4xl font-black transition-colors text-white">Boshqaruv Paneli</h1>
-                    <ShieldCheck className="text-[#E11D48] animate-pulse" size={24} />
+                  <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight flex items-center gap-4">
+                    Boshqaruv Paneli <span className="text-sm font-light text-gray-500">(v2.2)</span>
+                    <ShieldCheck className="text-[#E11D48] w-8 h-8 animate-pulse" />
+                  </h1>
                 </div>
            </div>
 
@@ -385,18 +390,13 @@ export default function AdminPanel() {
                                         >
                                             <Send size={14} />
                                         </button>
-                                        <div 
-                                          role="button"
-                                          onClick={(e) => {
-                                              e.preventDefault();
-                                              e.stopPropagation();
-                                              deleteInvite(inv.id);
-                                          }}
-                                          className="relative z-50 p-3 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 cursor-pointer pointer-events-auto"
+                                        <button 
+                                          onClick={() => deleteInvite(inv.id)}
+                                          className="p-3 bg-red-500 text-white rounded-xl transition-all shadow-lg active:scale-90 cursor-pointer"
                                           title="O'chirish"
                                         >
                                             <Trash2 size={18} />
-                                        </div>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
