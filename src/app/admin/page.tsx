@@ -385,13 +385,18 @@ export default function AdminPanel() {
                                         >
                                             <Send size={14} />
                                         </button>
-                                        <button 
-                                          onClick={() => deleteInvite(inv.id)}
-                                          className="p-3 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-xl transition-all shadow-lg active:scale-95"
+                                        <div 
+                                          role="button"
+                                          onClick={(e) => {
+                                              e.preventDefault();
+                                              e.stopPropagation();
+                                              deleteInvite(inv.id);
+                                          }}
+                                          className="relative z-50 p-3 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 cursor-pointer pointer-events-auto"
                                           title="O'chirish"
                                         >
                                             <Trash2 size={18} />
-                                        </button>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
