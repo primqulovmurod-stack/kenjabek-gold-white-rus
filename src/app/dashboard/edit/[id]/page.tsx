@@ -353,6 +353,8 @@ export default function EditInvitationPage({ params }: { params: Promise<{ id: s
                 console.error('DATABASE SYNC ERROR:', error);
                 alert("Bazaga saqlashda xatolik! Supabase'da INSERT/UPDATE ruxsatlarini (public) tekshiring: " + error.message);
             }
+        } catch (dbErr) {
+            console.error('DATABASE SYNC FATAL:', dbErr);
         }
         
         // Logical Next Step after save
