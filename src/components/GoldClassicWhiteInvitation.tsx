@@ -68,6 +68,35 @@ export default function GoldClassicWhiteInvitation({
     setTimeout(() => setIsCopied(false), 2000);
   };
 
+  // Parse date string (e.g., "24 - APREL - 2026")
+  const dateParts = date.split(' - ');
+  const dayNum = parseInt(dateParts[0]) || 24;
+  const monthNameRaw = (dateParts[1] || "APREL").split(',')[0].trim();
+  const yearNum = parseInt(dateParts[2]) || 2026;
+
+  const monthMap: { [key: string]: number } = {
+    "YANVAR": 0, "FEVRAL": 1, "MART": 2, "APREL": 3, "MAY": 4, "IYUN": 5,
+    "IYUL": 6, "AVGUST": 7, "SENTYABR": 8, "OKTYABR": 9, "NOYABR": 10, "DEKABR": 11,
+    "ЯНВАРЬ": 0, "ФЕВРАЛЬ": 1, "МАРТ": 2, "АПРЕЛЬ": 3, "МАЙ": 4, "ИЮНЬ": 5,
+    "ИЮЛЬ": 6, "АВГУСТ": 7, "СЕНТЯБРЬ": 8, "ОКТЯБРЬ": 9, "НОЯБРЬ": 10, "ДЕКАБРЬ": 11
+  };
+
+  const isRussian = typeof window !== 'undefined' && (
+    window.location.hostname.includes('rus') || 
+    monthNameRaw.toUpperCase().match(/[А-Я]/)
+  );
+
+  const weekDaysUz = ["YAKSHANBA", "DUSHANBA", "SESHANBA", "CHORSHANBA", "PAYSHANBA", "JUMA", "SHANBA"];
+  const weekDaysRu = ["ВОСКРЕСЕНЬЕ", "ПОНЕДЕЛЬНИК", "ВТОРНИК", "СРЕДА", "ЧЕТВЕРГ", "ПЯТНИЦА", "СУББОТА"];
+  
+  const targetDateObj = new Date(
+    yearNum,
+    monthMap[monthNameRaw.toUpperCase()] !== undefined ? monthMap[monthNameRaw.toUpperCase()] : 3,
+    dayNum
+  );
+
+  const dayOfWeek = isRussian ? weekDaysRu[targetDateObj.getDay()] : weekDaysUz[targetDateObj.getDay()];
+
   return (
     <div className={`min-h-screen bg-white text-[#1A1A1A] font-sans relative flex justify-center ${isPreview ? 'h-full overflow-hidden' : (isOpened ? '' : 'h-screen overflow-hidden')}`}>
       <div className={`w-full max-w-[500px] bg-white relative shadow-2xl ${isPreview ? 'h-full' : (isOpened ? 'min-h-screen' : 'h-screen overflow-hidden')}`}>
@@ -101,7 +130,7 @@ export default function GoldClassicWhiteInvitation({
                 <div className="w-24 h-24 border border-[#D4AF37]/30 rounded-full flex items-center justify-center relative bg-white/50 backdrop-blur-sm">
                     <Heart size={32} className="text-[#D4AF37]/40" fill="currentColor" />
                     <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-4 py-1 bg-white border border-[#D4AF37]/30 rounded-full">
-                        <p className={`text-xs font-serif font-bold ${goldText}`}>{date.split(' - ')[0] || "24"}</p>
+                        <p className={`text-xs font-serif font-bold ${goldText}`}>{dayNum}</p>
                     </div>
                 </div>
 
@@ -109,7 +138,7 @@ export default function GoldClassicWhiteInvitation({
                     <div className="w-20 h-20 rounded-full border border-[#D4AF37]/40 flex items-center justify-center bg-white shadow-xl group-active:scale-95 transition-transform">
                         <MailOpen className="w-8 h-8 text-[#D4AF37]" strokeWidth={1} />
                     </div>
-                    <span className="text-[10px] font-bold tracking-[0.4em] text-[#D4AF37] uppercase">Taklifnomani ochish</span>
+                    <span className="text-[10px] font-bold tracking-[0.4em] text-[#D4AF37] uppercase">{isRussian ? "ОТКРЫТЬ ПРИГЛАШЕНИЕ" : "Taklifnomani ochish"}</span>
                 </button>
               </div>
             </motion.div>
@@ -144,7 +173,7 @@ export default function GoldClassicWhiteInvitation({
             </p>
             <div className="pt-10 md:pt-20">
                 <div className="inline-block relative px-12 py-6 border-y border-[#D4AF37]/40 text-center">
-                    <p className={`text-xl md:text-2xl font-serif tracking-[0.4em] uppercase ${goldText} font-bold`}>{date}</p>
+                    <p className={`text-xl md:text-2xl font-serif tracking-[0.4em] uppercase ${goldText} font-bold`}>{date.split(',')[0]}, {dayOfWeek}</p>
                 </div>
             </div>
           </section>
