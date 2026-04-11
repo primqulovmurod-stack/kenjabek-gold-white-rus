@@ -14,7 +14,7 @@ export function VenueSection({ locationName, locationAddress, locationUrl, isPre
         initial={{ opacity: 0, y: 70, scale: 0.96 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
         viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 1, ease: 'easeOut' }}
         className="relative z-10 w-full max-w-4xl px-6"
       >
         <div className={`bg-white rounded-[2rem] border border-gray-100 shadow-2xl shadow-gray-200/50 flex ${isPreview ? 'flex-col' : 'flex-col md:flex-row'} overflow-hidden`}>

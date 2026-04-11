@@ -42,7 +42,7 @@ export function CalendarSection({ date, isPreview = false }: { date?: string; is
         initial={{ opacity: 0, y: 60 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.9, ease: 'easeOut' }}
         className={`text-center ${isPreview ? 'mb-6' : 'mb-8 md:mb-12'} space-y-2 md:space-y-3`}
       >
         <span className="inline-block px-4 py-1.5 rounded-full bg-purple-100 text-purple-700 text-[10px] md:text-xs font-bold uppercase tracking-wider mb-1 md:mb-2">

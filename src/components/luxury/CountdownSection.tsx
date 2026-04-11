@@ -76,7 +76,7 @@ const CountdownSection: React.FC<CountdownSectionProps> = ({ weddingDate, isPrev
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
           className={`text-center ${isPreview ? 'mb-6' : 'mb-10'}`}
         >
           <div className="flex items-center justify-center gap-2 mb-2">
@@ -94,7 +94,7 @@ const CountdownSection: React.FC<CountdownSectionProps> = ({ weddingDate, isPrev
               initial={{ opacity: 0, y: 30, scale: 0.85 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: i * 0.1 }}
+              transition={{ duration: 0.6, ease: 'easeOut', delay: i * 0.1 }}
             >
               <TimeBlock value={item.value} label={item.label} />
             </motion.div>

@@ -5,18 +5,18 @@ import { motion } from 'framer-motion';
 import { Navigation } from 'lucide-react';
 
 // Animatsiya variantlari
-const fadeUp = (delay = 0) => ({
+const fadeUp = (delay = 0): any => ({
   initial: { opacity: 0, y: 60 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: '-80px' },
-  transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1], delay },
+  transition: { duration: 0.9, ease: 'easeOut', delay },
 });
 
-const fadeLeft = (delay = 0) => ({
+const fadeLeft = (delay = 0): any => ({
   initial: { opacity: 0, x: 80 },
   whileInView: { opacity: 1, x: 0 },
   viewport: { once: true, margin: '-80px' },
-  transition: { duration: 1, ease: [0.22, 1, 0.36, 1], delay },
+  transition: { duration: 1, ease: 'easeOut', delay },
 });
 
 export function HeroSection({ groomName, brideName, date, time, locationName, locationAddress, locationUrl, description, isPreview = false, imageUrl }: { groomName?: string; brideName?: string; date?: string; time?: string; locationName?: string; locationAddress?: string; locationUrl?: string; description?: string; isPreview?: boolean; imageUrl?: string }) {
@@ -113,7 +113,7 @@ export function HeroSection({ groomName, brideName, date, time, locationName, lo
             initial={{ scale: 0.85, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.35 }}
+            transition={{ duration: 1.1, ease: 'easeOut', delay: 0.35 }}
             className={`relative ${isPreview ? 'w-[200px] h-[300px]' : 'w-[300px] h-[400px] md:w-[400px] md:h-[500px] lg:w-[450px] lg:h-[600px]'} mx-auto overflow-hidden shadow-2xl bg-gray-100 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] border-8 border-white`}
           >
             <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url("${imageUrl || defaultImage}")` }} />

@@ -30,7 +30,7 @@ export function GiftSection({
         initial={{ opacity: 0, y: 70, scale: 0.95 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
         viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 1, ease: 'easeOut' }}
         className={`w-full ${isPreview ? 'max-w-xs' : 'max-w-lg'} px-6 relative z-10 flex flex-col items-center ${isPreview ? 'gap-6' : 'gap-12'}`}
       >
         <div className="text-center space-y-4">
