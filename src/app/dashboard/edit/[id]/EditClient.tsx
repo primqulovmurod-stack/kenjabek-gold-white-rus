@@ -26,6 +26,7 @@ import {
   Upload,
   Loader2,
   RefreshCw,
+  Send,
   Volume2,
   VolumeX,
   Sun,
