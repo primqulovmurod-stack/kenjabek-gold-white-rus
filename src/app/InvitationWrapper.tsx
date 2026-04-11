@@ -84,10 +84,10 @@ export default function InvitationWrapper({ initialHost }: InvitationWrapperProp
     }
   } else if (theme === 'pink' || hostLower.includes('pink')) {
     content = (
-      <PinkWhiteInvitation 
+      <PinkLuxuryInvitation 
         groomName="Kenjabek"
         brideName="Safiya"
-        date="24 - APREL - 2026"
+        date="2026-04-24"
         time="19:00"
         locationName="Demir (Asr)"
         locationAddress="Jizzax Shahar"
