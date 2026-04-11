@@ -46,7 +46,7 @@ export default function PinkLuxuryInvitation({
   isPreview = false,
   isMuted = false
 }: PinkLuxuryInvitationProps) {
-  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [isUnlocked, setIsUnlocked] = useState(isPreview);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = React.useRef<HTMLAudioElement | null>(null);
 
@@ -81,10 +81,10 @@ export default function PinkLuxuryInvitation({
 
   return (
     <div 
-      className="relative min-h-[100svh] selection:bg-purple-200 font-sans text-[#0F172A] bg-cover bg-fixed bg-center"
+      className={`relative min-h-[100svh] selection:bg-purple-200 font-sans text-[#0F172A] bg-cover bg-center ${isPreview ? '' : 'bg-fixed'}`}
       style={{ backgroundImage: 'url("/assets/lock-bg.png")' }}
     >
-      <div className="fixed inset-0 bg-white/70 backdrop-blur-[2px] pointer-events-none" />
+      <div className="absolute inset-0 bg-white/70 backdrop-blur-[2px] pointer-events-none" />
       <div className="relative z-10 w-full h-full">
       {musicUrl && <audio ref={audioRef} src={musicUrl} loop muted={isMuted} />}
       <AnimatePresence>
